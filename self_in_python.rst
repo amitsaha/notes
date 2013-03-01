@@ -11,12 +11,12 @@ the following code ::
     
 
    if __name__ == '__main__': 
-       # create an instance of the class 
-       p = Point()
-       print 'Point object identifier', id(p)
+        # create an instance of the class 
+        p = Point()
+        print 'Point object identifier', id(p)
 
-       # create an instance of the class p = Point()
-       print 'Point object identifier', id(p)
+        # create an instance of the class p = Point()
+        print 'Point object identifier', id(p)
 
 As you can see, a class (that does nothing) called ``Point`` is defined
 and then two objects/instances are created. To verify that
