@@ -670,7 +670,7 @@ Drop me_ a line at amitsaha.in@gmail.com or tweet me @echorand.
 .. _Python data model: http://docs.python.org/2/reference/datamodel.html#objects-values-and-types
 .. _me: http://echorand.me
 .. _@echorand: https://twitter.com/echorand
-.. _here: https://github.com/amitsaha/notes/data_python_c
+.. _here: https://github.com/amitsaha/notes/tree/master/data_python_c
 ..
 
 Resources and References
