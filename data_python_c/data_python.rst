@@ -11,7 +11,7 @@ automatically decides what type to use for your data without the need
 to be explicitly specified.
 
 For example, you create an integer in Python by simply typing in the
-integer:
+integer ::
 
     >>> 1
     1
@@ -500,7 +500,7 @@ shows the difference between the two ::
 The final recipe demonstrates how you can propagate changes to mutable
 data objects using the ``return`` statement.
 
-Listing: mod_immut_parameter.py
+Listing: mod_immut_parameter.py ::
 
     #!/usr/bin/env python
 
@@ -552,7 +552,7 @@ The ``copy`` module is useful in other situations where you want a
 real copy of a data object instead of another binding to the same
 object. The next listing demonstrates this.
 
-Listing: when_copy.py
+Listing: when_copy.py ::
 
     #!/usr/bin/env python
 
