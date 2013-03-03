@@ -64,11 +64,8 @@ It is important to realize that the identity of an object is unique
 during its lifetime and will never be the same as another object
 existing in the same time frame.
 
-..pull-quote::
-
-It is to be kept in mind that the result returned by ``id()`` is going
-to be different for you, so please keep that in mind as you work
-through this article.
+The result returned by ``id()`` is going to be different for you, so
+please keep that in mind as you work through this article. 
 
 Binding (not copying)
 =====================
