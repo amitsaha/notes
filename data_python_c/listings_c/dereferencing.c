@@ -11,6 +11,6 @@ int main(int argc, char **argv)
   *ptr = 2;
 
   printf("Address of a:: %p, Data in a:: %d\n", ptr, *ptr);
-  
+
   return 0;
 }

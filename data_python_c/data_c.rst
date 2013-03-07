@@ -27,12 +27,15 @@ Listing: address.c ::
         int a=1;
 
 	printf("Address of a:: %p, Data in a:: %d\n", &a, a);
+
 	return 0;
     }
 
 When you compile and run the above program, you should see an output similar to the following::
 
+
 Address of a:: 0x7fff0cadd1ac, Data at a:: 1
+
 
 You should note that, the exact value of this address is immaterial
 for us and it will definitely be different for you. Once you have this
@@ -76,6 +79,10 @@ Pointers are of course variables themselves and hence you could use the
 ``&`` and ``*`` operators on them as well. For the purpose of this
 article however, we will just be needing pointers to non-pointer
 variables.
+
+Pointers are of course variables themselves, so, you could use the
+``&`` and ``*`` operators on them as well. For the purpose of this
+article however, we will just be needing `simple` pointers.
 
 Assignment
 ==========
@@ -149,6 +156,12 @@ int main(int argc, char **argv)
 
   return 0;
 }
+=======
+
+Assignment statements are copy statements. They store the value of
+the variable or the result of the expression on the right hand side 
+in the memory location pointed to by the variable on the left hand 
+side. 
 
 Any changes to the "original" variable is not reflected in any
 other copies of this variable.
