@@ -1,6 +1,5 @@
 /* Variables are by default mutable.
  */
-
 # include <stdio.h>
 
 int a = 1;
