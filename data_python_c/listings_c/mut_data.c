@@ -1,4 +1,8 @@
 /* Variables are by default mutable.
+
+   Two variables occupy different locations in memory even if
+   they may be storing the same data.
+
  */
 # include <stdio.h>
 
