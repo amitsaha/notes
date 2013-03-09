@@ -17,6 +17,7 @@ void func(int a, char string1[], char string2[])
   printf("Address of string3: %p \n", &string3[0]);
 
   printf("a = %d \nstring1 = %s \nstring2 = %s\n",a, string1, string3);
+  printf("\n");
 
   /* Make modifications */
   a = a+1;
@@ -31,6 +32,7 @@ void func(int a, char string1[], char string2[])
   printf("Address of string3: %p \n", &string3[0]);
 
   printf("a = %d \nstring1 = %s \nstring2 = %s\n",a, string1, string3);
+  printf("\n");
 
   return;
 }
@@ -49,6 +51,7 @@ int main(int argc, char **argv)
   printf("Address of string2: %p \n", &string2[0]);
 
   printf("a = %d \nstring1 = %s \nstring2 = %s\n",a, string1, string2);
+  printf("\n");
 
   func(a, string1, string2);
 
@@ -59,6 +62,7 @@ int main(int argc, char **argv)
   printf("Address of string2: %p \n", &string2[0]);
 
   printf("a = %d \nstring1 = %s \nstring2 = %s\n",a, string1, string2);
+  printf("\n");
   
   return 0;
 }

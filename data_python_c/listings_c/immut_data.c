@@ -1,10 +1,15 @@
 # include <stdio.h>
 
-
 int main(int argc, char **argv)
 {
   int a = 1;
   const int b = a;
+
+  /* This is not allowed as well
+   
+  const c;
+  c=1;
+  */
 
   /* Even though this is the same value as already stored in a,
      this is not known to the compiler at compile time. Hence, the

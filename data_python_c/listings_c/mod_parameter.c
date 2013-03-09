@@ -6,7 +6,7 @@ void func(int *a, char *string)
 
   printf("In func()\n");
 
-  printf("Address of a: %p \n", &a);
+  printf("Address of a: %p \n", a);
   printf("Address of string: %p \n", &string[0]);
 
   printf("a = %d string = %s\n\n",*a, string);
