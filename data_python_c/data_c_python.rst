@@ -1,4 +1,4 @@
-Data in C and Python: A comparison
+Data in C and CPython: A comparison
 ----------------------------------
 
 In my last two articles (`Data in CPython`_ and `Data in C`_), as it
