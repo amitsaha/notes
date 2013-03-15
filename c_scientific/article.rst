@@ -1,17 +1,15 @@
-                                              C/C++ Scientific Programming Libraries and Tools
-					      ------------------------------------------------
+C/C++ Scientific Programming Libraries and Tools
+----------------------------------------------
 
-
-[SECTION: Introduction]
-
-Math.h provides basic mathematical functions as part of the C standard library and are also usable from C++. However, it needs
+``math.h`` provides basic mathematical functions as part of the C standard library and are also usable from C++. However, it needs
 to be supplemented with custom libraries when advanced numerical functionalities are desired. In this article, we shall take
 a look at two such libraries - the GNU Scientific Library and Blitz++. In the last part of this article, we take a look
 at Ch - a C/C++ interpreter which combines the power of C/C++ with the ease of use of an interpreter. Since we look at three
 different topics - we shall be discussing the very basics of each in a hands-on fashion stressing on examples to illustrate
 the features.
 
-[SECTION: GNU Scientific Library]
+GNU Scientific Library
+----------------------
 
 The GNU Scientific Library (GSL) is the most well-developed library for scientific computing in C/C++. It has routines
 for working with vectors and matrices, support for complex numbers, calculus, interpolation, statistics, random numbers generation
@@ -43,19 +41,16 @@ The next program (Listing 2) demonstrates couple of these operations.
 
 [INSERT gsl_vector_ops.c Caption: Listing 2]
 
-On executing the above code, you should see an output similar to:
+On executing the above code, you should see an output similar to::
 
-<code>
-Number of elements in the vector:: 5
-V1:: 0.999742 0.282618 0.231657 0.957477 0.540044 
-V2:: 0.16291 0.947201 0.484974 0.744305 0.739953 
+    Number of elements in the vector:: 5
+    V1:: 0.999742 0.282618 0.231657 0.957477 0.540044 
+    V2:: 0.16291 0.947201 0.484974 0.744305 0.739953 
 
->>> Vector Operations >>> 
+    >>> Vector Operations >>> 
 
-V1+V2:: 1.16265 1.22982 0.71663 1.70178 1.28 
-V1-V2:: 0.999742 0.282618 0.231657 0.957477 0.540044 
-
-</code>
+    V1+V2:: 1.16265 1.22982 0.71663 1.70178 1.28 
+    V1-V2:: 0.999742 0.282618 0.231657 0.957477 0.540044 
 
 GSL provides support for two-dimensional matrices (http://www.gnu.org/software/gsl/manual/html_node/Matrices.html) and has an interface similar
 to the GSL vectors. Matrices provide the foundation for the GSL's linear algebra functions.
@@ -67,19 +62,16 @@ Listing 3 demonstrates a simple usage for a couple of these.
 
 The gsl_sort_vector() function carries out an in-place sorting on the specified vector, and the gsl_sort_vector_largest() is used to find
 the k largest numbers. In the above listing, a vector is initialized with 10000 random numbers and the top 10 is chosen using the latter function.
-On execution of the above code, you should see an output similar to this:
+On execution of the above code, you should see an output similar to this::
 
-<code>
+    Number of elements in the vector:: 5
+    (Hopefully) Unsorted Vector:: 0.999742 0.16291 0.282618 0.947201 0.231657 
+    Sorted Vector::               0.16291 0.231657 0.282618 0.947201 0.999742 
 
-Number of elements in the vector:: 5
-(Hopefully) Unsorted Vector:: 0.999742 0.16291 0.282618 0.947201 0.231657 
-Sorted Vector::               0.16291 0.231657 0.282618 0.947201 0.999742 
+    10 largest numbers:: 
 
-10 largest numbers:: 
+    0.999979 0.999973 0.999927 0.999785 0.999723 0.999678 0.999525 0.999496 0.999481 0.999009
 
-0.999979 0.999973 0.999927 0.999785 0.999723 0.999678 0.999525 0.999496 0.999481 0.999009
-
-</code>
 
 In your application, you might have a need for finding the original indices of the elements in sorted order - gsl_sort_vector_index() 
 and the gsl_sort_largest_index() correspond to the two functions we used in Listing 3.
@@ -89,13 +81,11 @@ at x=-1 (Listing 4) (This program has been built upon the example in the GSL doc
 
 [INSERT gsl_fmin.c. Caption: Listing 4]
 
-The three key statements in the above code is:
+The three key statements in the above code is::
 
-<code>
-T = gsl_min_fminimizer_goldensection; /*Set the minimization algorithm - Uses Golden Section*/
-s = gsl_min_fminimizer_alloc (T); /* Initialize the minimizer*/
-gsl_min_fminimizer_set (s, &F, m, a, b); /*Set up the minimizer*/
-</code>
+    T = gsl_min_fminimizer_goldensection; /*Set the minimization algorithm - Uses Golden Section*/
+    s = gsl_min_fminimizer_alloc (T); /* Initialize the minimizer*/
+    gsl_min_fminimizer_set (s, &F, m, a, b); /*Set up the minimizer*/
   
 The first statement sets the minimization algorithm, here we set to an algorithm which is not known for fast convergence - the Golden Section
 algorithm (http://www.gnu.org/software/gsl/manual/html_node/Minimization-Algorithms.html). The second statement initializes the minimizer
@@ -109,7 +99,8 @@ are also available in GSL.
 Here, we end our discussion on GSL for the purpose of this article. The resources section at the end has references to 
 the extensive documentation which will help you explore the other advanced capabilities of GSL.
 
-[SECTION:A look at Blitz++]
+A look at Blitz++
+=================
 
 Blitz++ (http://www.oonumerics.org/blitz/) is a C++ class library for scientific computing. The project page reports performance
 on part with Fortran 77/90 and currently has support for arrays, vectors, matrices and random number generators. To install this
@@ -166,7 +157,8 @@ In this section, we have taken a very generic look at Blitz++, learning about th
 and then using them in a small utility for creating a random pool. There is a large number of other features in Blitz++, which you can learn from 
 the project website: http://www.oonumerics.org/blitz/. Please refer to the resources section at the end for relevant pointers.
 
-[SECTION:A look at Ch]
+A look at Ch
+============
 
 If you are familiar with MATLAB, Mathematica or Python (with appropriate libraries), you definitely appreciate the quick
 prototyping abilities that these tools give you. You can simply fire up the appropriate interpreter and try out short numerical
@@ -183,89 +175,80 @@ A feature-wise comparison of the various editions can be found at http://www.sof
 The installer is made available in the form of a gzipped tarball, and if you do a system-wide install, it will be ready to use immediately after the install. 
 (If you install it in a custom location, you will need to update your $PATH accordingly).
 
-Type Ch at the shell prompt to start the interpreter.
+Type Ch at the shell prompt to start the interpreter::
 
-<code>
-$ ch
-  Ch 
- Evaluation edition, version 7.0.0.15151 
-Copyright (C) SoftIntegration, Inc. 2001-2011
-http://www.softintegration.com
-/home/gene/temp_work/C_Scientific/chprofessional-7.0.0.linux2.4.20.intel> cd
-/home/gene> 
+    $ ch
+    Ch 
+    Evaluation edition, version 7.0.0.15151 
+    Copyright (C) SoftIntegration, Inc. 2001-2011
+    http://www.softintegration.com
+    /home/gene/temp_work/C_Scientific/chprofessional-7.0.0.linux2.4.20.intel> cd
+    /home/gene> 
 
-</code>
+Before we go into the details, let us try out a few things based on what we know and would expect from a C interpreter::
 
-Before we go into the details, let us try out a few things based on what we know and would expect from a C interpreter:
+    > 1*3+1
+    4 
 
-<code>
-> 1*3+1
-4 
-
-> sin(45)
-0.8509 
+    > sin(45)
+    0.8509 
 
 
-> pow(5,4)
-625.0000 
+    > pow(5,4)
+    625.0000 
 
-> int x=4;
-> float y=6.53;
-> x*y+1
-27.12 
+    > int x=4;
+    > float y=6.53;
+    > x*y+1
+    27.12 
 
-> printf("Hello World")
-Hello World 
+    > printf("Hello World")
+    Hello World 
 
-> string_t s="I am a String"
-> printf(s)
-I am a String 
+    > string_t s="I am a String"
+    > printf(s)
+    I am a String 
 
-
-</code>
 
 As you can see, its the good old C minus the additional baggage. The math library functions are already available and hence you can straightaway
 use them. Let us now look into some of the salient features Ch offers for scientific and numerical computing. Arrays are first class objects in 
-Ch. That is, you can work with them similar to the way you can work with other data types. Let us see a few examples:
+Ch. That is, you can work with them similar to the way you can work with other data types. Let us see a few examples::
 
-<code>
-> array int a[5]={1,2,3,4,5}; /*define an integer array*/
-> array float b[5]={4.1,1.2,4.2,5.1,9.1}; /*define a float array*/
+    > array int a[5]={1,2,3,4,5}; /*define an integer array*/
+    > array float b[5]={4.1,1.2,4.2,5.1,9.1}; /*define a float array*/
 
-> a
-1 2 3 4 5 
-> b
-4.10 1.20 4.20 5.10 9.10 
+    > a
+    1 2 3 4 5 
+    > b
+    4.10 1.20 4.20 5.10 9.10 
 
-> double array c[5];
-> c=a+b
-5.1000 3.2000 7.2000 9.1000 14.1000 
+    > double array c[5];
+    > c=a+b
+    5.1000 3.2000 7.2000 9.1000 14.1000 
 
-> c=a.*b
-4.1000 2.4000 12.6000 20.4000 45.5000 
+    > c=a.*b
+    4.1000 2.4000 12.6000 20.4000 45.5000 
 
 
-> array double a[2][3]={4.1,4.2,1.3,6.1,4.1,1.3}; /*define a 2x3 matrix*/
-> array double b[2][3]={1.2,3.1,4.1,6.3,4.1,6.3}; /*define a 2x3 matrix*/
+    > array double a[2][3]={4.1,4.2,1.3,6.1,4.1,1.3}; /*define a 2x3 matrix*/
+    > array double b[2][3]={1.2,3.1,4.1,6.3,4.1,6.3}; /*define a 2x3 matrix*/
 
-> a+b
-5.3000 7.3000 5.4000 
-12.4000 8.2000 7.6000 
+    > a+b
+    5.3000 7.3000 5.4000 
+    12.4000 8.2000 7.6000 
 
-> a.*b
-4.9200 13.0200 5.3300 
-38.4300 16.8100 8.1900 
+    > a.*b
+    4.9200 13.0200 5.3300 
+    38.4300 16.8100 8.1900 
 
-> a*transpose(b) /*product of a and the transpose of b*/
-23.2700 51.2400 
-25.3600 63.4300 
+    > a*transpose(b) /*product of a and the transpose of b*/
+    23.2700 51.2400 
+    25.3600 63.4300 
 
-> array double matrix[2][2] = {1.1,0.53,1.44,9.1};
-> inverse(matrix) /* find the inverse of matrix*/
-0.9841 -0.0573 
--0.1557 0.1190
-
-</code>
+    > array double matrix[2][2] = {1.1,0.53,1.44,9.1};
+    > inverse(matrix) /* find the inverse of matrix*/
+    0.9841 -0.0573 
+    -0.1557 0.1190
 
 In the code snippets above, we have defined vectors and matrices of array data type and we have added them, multiplied them like we would
 multiply scalars. To be more technical, these operators have been overloaded in Ch to handle arrays. Hence, you can use the same addition
@@ -273,47 +256,37 @@ operator to add two vectors or matrices, which you used to handle an integer or 
 
 The .* operator is used for element-wise multiplication and the * is used for the matrix multiplication. The function transpose() returns
 the transpose of a matrix and inverse() returns the inverse of a square matrix. Consider a system of linear equations:
-2x+3y=5, -4x+4y=6 which can be expressed as AX=B, where A,X and B are defined as follows:
+2x+3y=5, -4x+4y=6 which can be expressed as AX=B, where A,X and B are defined as follows::
 
-<code>
-> array double a[2][2]={2,3,-4,4}; /*define A*/
-> array double x[2][1]; /*declare X*/
-> array double b[2][1]={5,6}; /*define b*/
+    > array double a[2][2]={2,3,-4,4}; /*define A*/
+    > array double x[2][1]; /*declare X*/
+    > array double b[2][1]={5,6}; /*define b*/
 
-</code>
+The solution of this system of equations is given by X=inverse(A)*B::
 
-The solution of this system of equations is given by X=inverse(A)*B:
-<code>
-> x=inverse(a)*b
-0.1000 
-1.6000 
-</code>
+    > x=inverse(a)*b
+    0.1000 
+    1.6000 
 
 Besides these basic operations, Ch has support for a large number of matrix analysis functions such as the decomposition of matrices, finding 
 the eigen values and vectors, and support for generic array operations such as finding the sum, norm and related functions. The Ch professional
 edition also includes bindings for the LAPACK libraries. 
 
 Next, we shall use arrays to represent polynomials. Consider a cubic polynomial: 5x^3+2x^2+3x+5. To represent this polynomial, we shall use 
-a double array to store its co-efficients:
+a double array to store its co-efficients::
 
-<code>
-> array double poly[4]={5,2,3,5}; /*define the array to specify the above polynomial*/
-</code>
+    > array double poly[4]={5,2,3,5}; /*define the array to specify the above polynomial*/
 
-Now, we shall use a Ch function, called polyder() to find the first order derivative of this polynomial:
+Now, we shall use a Ch function, called polyder() to find the first order derivative of this polynomial::
 
-<code>
-> array double poly_der[3]; /*polyder() will store the derivative in this array*/
-> polyder(poly_der,poly) /*polyder() returns 0 on success, -1 on failure*/
-0 
-/home/gene> poly_der /*print the coefficients of the derivative polynomial*/
-15.0000 4.0000 3.0000 
-
-</code>
+    > array double poly_der[3]; /*polyder() will store the derivative in this array*/
+    > polyder(poly_der,poly) /*polyder() returns 0 on success, -1 on failure*/
+    0 
+    > poly_der /*print the coefficients of the derivative polynomial*/
+    15.0000 4.0000 3.0000 
 
 Hence, the derivative of this function is: 15x^2+4x+3.  Other functions available for working with polynomials include the polyeval() family of
 functions for evaluating the polynomial at an unknown point. 
-
 
 Support for calculus functions in Ch include support for differentiation, integration and solving ordinary differential equations. Ch includes
 functions for interpolation - interp(), curve-fitting and polynomial fitting - curvefit() and polyfit(), and root finding - fsolve(),fzero() and 
@@ -334,38 +307,35 @@ you should write a Ch script. A Ch script begins with the line #!/bin/ch and the
 by typing its name at the Ch interpreter. Unlike C/C++ programs, a Ch script need not have a main() function.
 
 For a C/C++ programmer, the interesting take home is that Ch is a superset of C and hence existing C codes can now be run via the Ch interpreter, which
-also means taking the benefits of Ch in legacy C codes. For example, consider the following code snippet - save it in a file chdemo.c :
+also means taking the benefits of Ch in legacy C codes. For example, consider the following code snippet - save it in a file chdemo.c::
 
-<code>
-#!/bin/ch
-#include<stdio.h>
-#include<numeric.h>
+    #!/bin/ch
+    #include<stdio.h>
+    #include<numeric.h>
 
-int main(int argc, char **argv)
-{
-  array double a[5]={1.4,1.5,9.1,1.3,4.1};
+    int main(int argc, char **argv)
+    {
+    array double a[5]={1.4,1.5,9.1,1.3,4.1};
 
-  printf(a);
-  printf("\n");
-  return 0;
-}
-</code>
+    printf(a);
+    printf("\n");
+    return 0;
+    }
 
 As you can see, the program begins with a statement alien to C/C++ programs - a #! which is the location of the Ch interpreter. After that its good old C
 but using the benefits of Ch - such as using the array data type, which is defined in the file numeric.h. Once you make this code executable using the
-chmod command, you can execute it:
+chmod command, you can execute it::
 
-<code>
-$ ./chdemo.c 
-1.4000 1.5000 9.1000 1.3000 4.1000 
-</code>
+    $ ./chdemo.c 
+    1.4000 1.5000 9.1000 1.3000 4.1000 
 
 As we have seen, Ch changes the whole ball game by bringing in rapid protoyping abilities to the tried and tested programming languages-C and C++. You can 
 make use of Ch's numerical functionalities to implement more functional C programs fast. The resources section at the end has more information on finding your
 way through Ch. 
 
 
-[SECTION: For Future Exploration]
+For Future Exploration
+======================
 
 There are couple more projects which I would like to draw your attention to in this area: Armadillo - a C++ Linear Algebra library 
 (http://arma.sourceforge.net/) and the GNU Multi-precision library (http://gmplib.org/). 
@@ -373,7 +343,8 @@ There are couple more projects which I would like to draw your attention to in t
 Please refer to the resources section to explore more on the topics we discussed in this article.
 
 
-[SECTION: Resources]
+Resources
+=========
 
 Math.h
 
@@ -409,11 +380,3 @@ Ch
 Resources:
 
 * Article source code: 'c_scientific_article' directory at https://bitbucket.org/amitksaha/articles_code/src
-
-
-Author's Bio:
-
-Amit Saha is currently a Ph.D research student in the area of Evolutionary Algorithms
-and Optimization. Like his random echoes would show (http://echorand.me), he has been
-writing on a myriad of Linux and Open Source technologies over the last 5 years.
-He welcomes comments on this article and beyond at amitsaha.in@gmail.com
