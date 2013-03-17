@@ -148,7 +148,7 @@ System2 as expected and hence it had to be recreated to execute it.
 
 
 CPython
-~~~~~~
+~~~~~~~
 
 On System1, create the `compiled` version of ``helloworld.py`` using the following
 code [#]_::
