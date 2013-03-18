@@ -1,45 +1,168 @@
 C/C++ Scientific Programming Libraries and Tools
 ----------------------------------------------
 
-``math.h`` provides basic mathematical functions as part of the C standard library and are also usable from C++. However, it needs
+``math.h`` provides basic mathematical functions as part of the `C` standard library and are also usable from `C++`. However, it needs
 to be supplemented with custom libraries when advanced numerical functionalities are desired. In this article, we shall take
-a look at two such libraries - the GNU Scientific Library and Blitz++. In the last part of this article, we take a look
-at Ch - a C/C++ interpreter which combines the power of C/C++ with the ease of use of an interpreter. Since we look at three
+a look at two such libraries - the GNU Scientific Library and Blitz++. In the last section of this article, we take a look
+at `Ch` - a C/C++ interpreter which combines the power of C/C++ with the ease of use of an interpreter. Since we look at three
 different topics - we shall be discussing the very basics of each in a hands-on fashion stressing on examples to illustrate
 the features.
 
 GNU Scientific Library
 ----------------------
 
-The GNU Scientific Library (GSL) is the most well-developed library for scientific computing in C/C++. It has routines
+The `GNU Scientific Library <http://www.gnu.org/software/gsl)>`_ (GSL) is perhaps the most well-developed library for scientific computing in C/C++. It has routines
 for working with vectors and matrices, support for complex numbers, calculus, interpolation, statistics, random numbers generation
-and host of others (http://www.gnu.org/software/gsl). The easiest way to install the library will be via your distribution's package manager. Let us now 
+and host of others. The easiest way to install the library will be via your Linux distribution's package manager. Let us now 
 get started with using the library.
 
-GSL's basic mathematical functions defines the common mathematical constants such as Pi, e, euler's constant and provides
-functions and macros for working with Infinities and Not-a-number, teasing the sign of numbers and miscellaneous 
-other numbers. One of the more interesting functions is the gsl_fcmp(double x, double y, double epsilon) function which is used to approximately compare
-two floating point numbers, x and y,accounting for rounding off and truncation errors - specified by epsilon. Now, we move onto
+GSL's basic mathematical functions defines the common mathematical constants such as :math:`\pi, e`, euler's constant and provides
+functions and macros for working with Infinities and Not-a-number, testing the sign of numbers and miscellaneous 
+other numbers. One of the more interesting functions is the ``gsl_fcmp(double x, double y, double epsilon)`` function which is used to approximately compare
+two floating point numbers, :math:`x` and :math:`y`, accounting for rounding off and truncation errors - specified by epsilon. Now, we move onto
 learn about the major functionalities provided by GSL.
 
 Our first program will demonstrate the usage of vectors in GSL (Listing 1).
 
-[INSERT gsl_vector.c Caption: Listing 1]
+::
 
-The code in listing one allocates a vector of the size specified by the user using the function gsl_vector_alloc(), which
+    /*Listing-1: gsl_vector.c*/
+
+    /* Simple demo of the vector support in GSL
+     *  Also uses the random number generation feature
+    */
+
+    #include <stdio.h>
+    #include <gsl/gsl_vector.h> /*For Vectors*/
+    #include <gsl/gsl_rng.h> /* For Random numbers*/
+     
+    int main ()
+    {
+        int i,n;
+	/* Setup the Random number generator*/
+	const gsl_rng_type * T;
+	gsl_rng * r;
+	gsl_rng_env_setup();
+	T = gsl_rng_default;
+	r = gsl_rng_alloc (T);     
+       
+        printf("Number of elements in the vector:: ");
+	scanf("%d",&n);
+  
+       /* Allocate the vector of the specified size*/
+       gsl_vector * v = gsl_vector_alloc (n);
+
+       /* Set the elements to a uniform random number in [0,1]*/
+       for (i = 0; i < n; i++)
+       {
+           gsl_vector_set (v, i, gsl_rng_uniform (r));
+       }
+       
+       /* Print the vector*/
+       for (i = 0; i < n; i++)
+       {
+           printf ("v_%d = %g\n", i, gsl_vector_get (v, i));
+       }
+     
+     gsl_vector_free (v);
+
+     return 0;
+    }
+
+
+The code in listing 1 allocates a vector of the size specified by the user using the function ``gsl_vector_alloc()``, which
 returns a pointer of gsl_vector type. Note that the default data type for the vector is a double. You can have a vector
 of any of the basic data-types (http://www.gnu.org/software/gsl/manual/html_node/Data-types.html). Next, we assign
-elements to this vector by using the function gsl_vector_set(), where v is the vector which we are assigning elements to,
-i is the position and gsl_uniform_random(r) returns a double which is assigned to the this element of the vector. 
-Next, we retrieve the elements of this vector element-wise by using the gsl_vector_get() function, and finally free the
-memory occupied by this vector using the gsl_vector_free() function. To compile this program, you will need to link
-the GSL library: gcc gsl_vector.c -lgsl. You may now execute the program and you will see it asks
+elements to this vector by using the function ``gsl_vector_set(v, i, gsl_rng_uniform(r))``, where ``v`` is the vector which we are assigning elements to,
+``i`` is the position and ``gsl_uniform_random(r)`` returns a double which is assigned to the this element of the vector. 
+Next, we retrieve the elements of this vector element-wise by using the ``gsl_vector_get()`` function, and finally free the
+memory occupied by this vector using the ``gsl_vector_free()`` function. To compile this program, you will need to link
+the GSL library (like so, ``gcc gsl_vector.c -lgsl``). You may now execute the program and you will see it asks
 for the number of elements in the vector and then print out the assigned vector.
 
 You can copy one vector to another, swap the elements, add/subtract/multiple/divide two vectors, scale them and other operations.
 The next program (Listing 2) demonstrates couple of these operations.
 
-[INSERT gsl_vector_ops.c Caption: Listing 2]
+::
+
+    /*Listing-2: gsl_vector_ops.c*/
+
+    /* Vector operations in GSL
+     * Also uses the random number generation feature
+    */
+
+    # include <stdio.h>
+    # include <gsl/gsl_vector.h> /*For Vectors*/
+    # include <gsl/gsl_rng.h> /* For Random numbers*/
+     
+    int main ()
+    {
+        int i,n;
+
+      	/* Setup the Random number generator*/
+	const gsl_rng_type * T;
+	gsl_rng * r;
+	gsl_rng_env_setup();
+	T = gsl_rng_default;
+	r = gsl_rng_alloc (T);     
+	
+	printf("Number of elements in the vector:: ");
+	scanf("%d",&n);
+	
+	/* Allocate the vectors of the specified size*/
+	gsl_vector * v1 = gsl_vector_alloc (n);
+	gsl_vector * v2 = gsl_vector_alloc (n);
+
+	/* Set the elements to a uniform random number in [0,1]*/
+	for (i = 0; i < n; i++)
+	{
+	    gsl_vector_set (v1, i, gsl_rng_uniform (r));
+      	    gsl_vector_set (v2, i, gsl_rng_uniform (r));
+	}
+       
+        /* Print the vector*/
+        printf("V1:: ");
+        for (i = 0; i < n; i++)
+        {
+            printf ("%g ", gsl_vector_get (v1, i));
+        }
+      	printf("\n");
+
+	printf("V2:: ");
+      	for (i = 0; i < n; i++)
+      	{
+            printf ("%g ", gsl_vector_get (v2, i));
+        }
+
+        printf("\n\n");
+        printf(">>> Vector Operations >>> \n\n");
+
+        /* v1+v2 gets stored in v1*/
+        gsl_vector_add(v1,v2);
+
+        printf("V1+V2:: ");
+        for (i = 0; i < n; i++)
+        {
+            printf ("%g ", gsl_vector_get (v1, i));
+        }
+        printf("\n");
+
+        /* v1-v2 gets stored in v1*/
+        gsl_vector_sub(v1,v2);
+
+     	printf("V1-V2:: ");
+     	for (i = 0; i < n; i++)
+     	{
+            printf ("%g ", gsl_vector_get(v1, i));
+     	}
+     	printf("\n");
+  
+        gsl_vector_free (v1);
+     	gsl_vector_free (v2);
+     
+        return 0;
+   }
+
 
 On executing the above code, you should see an output similar to::
 
@@ -52,16 +175,96 @@ On executing the above code, you should see an output similar to::
     V1+V2:: 1.16265 1.22982 0.71663 1.70178 1.28 
     V1-V2:: 0.999742 0.282618 0.231657 0.957477 0.540044 
 
-GSL provides support for two-dimensional matrices (http://www.gnu.org/software/gsl/manual/html_node/Matrices.html) and has an interface similar
-to the GSL vectors. Matrices provide the foundation for the GSL's linear algebra functions.
+GSL provides support for `two-dimensional matrices <http://www.gnu.org/software/gsl/manual/html_node/Matrices.html>` and has an interface similar
+to the GSL vectors. Matrices provide the foundation for the GSL's `linear algebra` functions.
 
 GSL's sorting functions provides facilities for sorting an array (C-style), a vector and finding the k smallest or largest functions.
 Listing 3 demonstrates a simple usage for a couple of these.
 
-[INSERT gsl_sort.c. Caption: Listing 3]
+::
 
-The gsl_sort_vector() function carries out an in-place sorting on the specified vector, and the gsl_sort_vector_largest() is used to find
-the k largest numbers. In the above listing, a vector is initialized with 10000 random numbers and the top 10 is chosen using the latter function.
+    /*Listing-3: gsl_sort.c*/
+
+    /* Demonstration of GSL's sorting functions
+    * Also uses the random number generation feature
+    */
+
+    #include <stdio.h>
+    #include <gsl/gsl_vector.h> /*For Vectors*/
+    #include <gsl/gsl_rng.h> /* For Random numbers*/
+     
+    int main ()
+    {
+        int i,n;
+
+      	/* Setup the Random number generator*/
+	const gsl_rng_type * T;
+	gsl_rng * r;
+	gsl_rng_env_setup();
+	T = gsl_rng_default;
+	r = gsl_rng_alloc (T);     
+	
+  
+	printf("Number of elements in the vector:: ");
+	scanf("%d",&n);
+	
+	/* Allocate the vector of the specified size*/
+	gsl_vector * v = gsl_vector_alloc (n);
+
+	/* Set the elements to a uniform random number in [0,1]*/
+	for (i = 0; i < n; i++)
+	{
+            gsl_vector_set (v, i, gsl_rng_uniform (r));
+	}
+	
+	/* Print the vector*/
+	printf("(Hopefully) Unsorted Vector:: ");
+	for (i = 0; i < n; i++)
+	{
+	    printf ("%g ", gsl_vector_get (v, i));
+	}
+
+	printf("\n");
+
+	/* Sort the vector*/
+	gsl_sort_vector(v);
+
+	/* Print the sorted vector*/
+	printf("Sorted Vector::               ");
+	for (i = 0; i < n; i++)
+	{
+            printf ("%g ", gsl_vector_get (v, i));
+	}
+	printf("\n");
+
+	/* Allocate a large vector*/
+	gsl_vector * v_large = gsl_vector_alloc (10000);
+	
+	/* Set the elements to a uniform random number in [0,1]*/
+	for (i = 0; i < 10000; i++)
+	{
+            gsl_vector_set (v_large, i, gsl_rng_uniform (r));
+	}
+	
+	/* Find the 10 largest numbers from the above vector*/
+	double *largest = malloc(10*sizeof(double));
+	gsl_sort_vector_largest (largest, 10, v_large);
+
+	printf("\n\n10 largest numbers:: \n\n");
+	
+	/* Print the 10 largest*/
+	for (i = 0; i < 10; i++)
+	    printf("%g ",largest[i]);
+	printf("\n\n");
+
+  	gsl_vector_free (v);
+  	free(largest);
+	
+	return 0;
+}
+
+The ``gsl_sort_vector()`` function carries out an in-place sorting on the specified vector, and the ``gsl_sort_vector_largest()`` is used to find
+the k largest numbers. In the above listing, a vector is initialized with ``10000`` random numbers and the top ``10`` is chosen using the latter function.
 On execution of the above code, you should see an output similar to this::
 
     Number of elements in the vector:: 5
@@ -73,31 +276,96 @@ On execution of the above code, you should see an output similar to this::
     0.999979 0.999973 0.999927 0.999785 0.999723 0.999678 0.999525 0.999496 0.999481 0.999009
 
 
-In your application, you might have a need for finding the original indices of the elements in sorted order - gsl_sort_vector_index() 
-and the gsl_sort_largest_index() correspond to the two functions we used in Listing 3.
+In your application, you might have a need for finding the original indices of the elements in sorted order - ``gsl_sort_vector_index()``
+and the ``gsl_sort_largest_index()`` correspond to the two functions we used in Listing 3.
 
-Next, we use GSL's function minimizing capabilities to find the minimum of a simple one-dimensional function: 2x^2 + 4x, which has a minimum
-at x=-1 (Listing 4) (This program has been built upon the example in the GSL documentation).
+Next, we use GSL's function minimizing capabilities to find the minimum of a simple one-dimensional function: :math:`2x^2 + 4x`, which has a minimum
+at ``x=-1`` (Listing 4) (This program has been built upon the example in the GSL documentation).
 
-[INSERT gsl_fmin.c. Caption: Listing 4]
+    /*Listing-4: gsl_fmin.c*/
+    /* Demonstration of using the function minimizing features
+    in GSL */
 
-The three key statements in the above code is::
+    #include <stdio.h>
+    #include <gsl/gsl_errno.h>
+    #include <gsl/gsl_math.h>
+    #include <gsl/gsl_min.h>
+     
+    /* Function: 2x^2 + 4x having a minimum at x=-1*/
+    double fn_1 (double x, void * params)
+    {
+        return 2*x*x + 4*x;
+    }
+     
+    int main ()
+    {
+        int status;
+	int iter = 0, max_iter = 100; /*Max. number of iterations*/
+	const gsl_min_fminimizer_type *T;
+	gsl_min_fminimizer *s;
+	double m = 0.7; /* Starting point for the search*/
+	double a = -4.0, b = 1.0; /* The interval in which the minimum lies*/
+	gsl_function F;
+	
+	F.function = &fn_1; /* Function to Minimize*/
+	F.params = 0;
+	
+	T = gsl_min_fminimizer_goldensection; /*Set the minimization algorithm - Uses Golden Section*/
+	s = gsl_min_fminimizer_alloc (T); /* Initialize the minimizer*/
+	gsl_min_fminimizer_set (s, &F, m, a, b); /*Set up the minimizer*/
+	
+	printf ("Using %s method\n", gsl_min_fminimizer_name (s));
+	printf ("%5s [%9s, %9s] %9s \n","iter", "lower", "upper", "min", "err", "err(est)");
+	printf ("%5d [%.7f, %.7f] %.7f \n",  iter, a, b, m);
+
+	/* Set up the iterative minimization procedure*/
+     
+        do
+     	{
+      	    iter++;
+      	    status = gsl_min_fminimizer_iterate(s);
+     
+	    m = gsl_min_fminimizer_x_minimum (s);
+	    a = gsl_min_fminimizer_x_lower (s);
+	    b = gsl_min_fminimizer_x_upper (s);
+	    
+	    status = gsl_min_test_interval (a, b, 0.001, 0.0);
+	    
+	    if (status == GSL_SUCCESS)
+	    printf ("Converged:\n");
+	    
+	    printf ("%5d [%.7f, %.7f] %.7f\n",iter, a, b, m);
+        } while (status == GSL_CONTINUE && iter < max_iter);
+     
+        gsl_min_fminimizer_free (s);
+     
+        return status;
+    }
+
+The three key statements in the above code is are::
 
     T = gsl_min_fminimizer_goldensection; /*Set the minimization algorithm - Uses Golden Section*/
     s = gsl_min_fminimizer_alloc (T); /* Initialize the minimizer*/
     gsl_min_fminimizer_set (s, &F, m, a, b); /*Set up the minimizer*/
   
-The first statement sets the minimization algorithm, here we set to an algorithm which is not known for fast convergence - the Golden Section
-algorithm (http://www.gnu.org/software/gsl/manual/html_node/Minimization-Algorithms.html). The second statement initializes the minimizer
-and the third statement specifies the function to minimize, F the initial point,m and the search bounds - a and b. The next
-step is to set the iteration for the minimization exercise using gsl_min_fminimizer_iterate() function. At every iteration,
-the convergence of the procedure is tested using the gsl_min_test_interval() function. The maximum number of iterations here 
-is set to 100 via the max_iter variable. When you compile and execute the above code, you should see that the minimization 
-routine progressively zooms in on the minimum of the function, -1. Multi-dimensional minimization and root-finding routines
-are also available in GSL.
+The first statement sets the minimization algorithm, here we set to an
+algorithm which is not known for fast convergence - the `Golden
+Section algorithm
+<http://www.gnu.org/software/gsl/manual/html_node/Minimization-Algorithms.html>`_. The
+second statement initializes the minimizer and the third statement
+specifies the function to minimize, F the initial point,m and the
+search bounds - a and b. The next step is to set the iteration for the
+minimization exercise using gsl_min_fminimizer_iterate() function. At
+every iteration, the convergence of the procedure is tested using the
+gsl_min_test_interval() function. The maximum number of iterations
+here  is set to 100 via the max_iter variable. When you compile and
+execute the above code, you should see that the minimization routine
+progressively zooms in on the minimum of the function,
+-1. Multi-dimensional minimization and root-finding routines are also available in GSL.
 
-Here, we end our discussion on GSL for the purpose of this article. The resources section at the end has references to 
-the extensive documentation which will help you explore the other advanced capabilities of GSL.
+We end our discussion on GSL for the purpose of this article. The resources section at the end has references to the
+extensive documentation which will help you explore the other advanced
+capabilities of GSL.
 
 A look at Blitz++
 =================
@@ -106,52 +374,230 @@ Blitz++ (http://www.oonumerics.org/blitz/) is a C++ class library for scientific
 on part with Fortran 77/90 and currently has support for arrays, vectors, matrices and random number generators. To install this
 library, either use your distribution's package manager or you may download the source from http://sourceforge.net/projects/blitz/files.
 
-Let us now write our first program using Blitz++ where we learn about using the Array class (Listing 5).
+Let us now write our first program using Blitz++ where we learn about
+using the Array class (Listing 5).
+:: 
 
-[INSERT array_demo.cc Caption: Listing 5]
+    /*array_demo.cc*/
 
-To compile this file correctly, you will need to link the blitz library: g++ array_blitz.cc -lblitz. In case you run into
+    /* Simple demonstration of using Array 
+    in Blitz++*/
+
+    #include <blitz/array.h>
+
+    using namespace blitz;
+
+    int main()
+    {
+
+        cout << ">>>> 1-D Array Demonstration >>>>" << endl << endl;
+
+  	Array<float,1> a(5);
+	a=1,2,3,4,5;
+	cout << "a = " << a <<endl << endl;
+
+	Array<float,1> b(5);
+	b=2,1,3,4,1;
+	cout << "b = " << b <<endl << endl;
+
+	cout << " >> Basic Arithmetic Operations >>" << endl << endl;
+
+	Array<float,1> c(5);
+	c = a+b;
+	cout << "c = a+b = " << c <<endl << endl;
+
+  	c = a*b;
+  	cout << "c = a*b = " << c <<endl << endl;
+  
+	c = a/b;
+	cout << "c = a/b = " << c <<endl << endl;
+
+	cout << ">>>> 2-D Array Demonstration >>>>" << endl << endl;
+
+	Array<float,2> A(3,3);
+	A = 1, 2, 3,
+	3, 5, 1,
+	1, 1, 4;
+
+	cout << "A = " << A << endl;
+
+	Array<float,2> B(3,3);
+	B = 1, 2, 3,
+	3, 5, 1,
+	1, 1, 4;
+
+	cout << "B = " << B << endl; 
+
+	cout << " >> Basic Arithmetic Operations >>" << endl << endl;
+
+	Array<float,2> C(3,3);
+	C = A+B;
+	cout << "C = A+B = " << C <<endl << endl;
+
+	C = A*B;
+	cout << "C = A*B = " << C <<endl << endl;
+	
+	C = A/B;
+	cout << "c = A/B = " << C <<endl << endl;
+
+	return 0;
+    }
+
+
+To compile this file correctly, you will need to link the blitz library: ``g++ array_blitz.cc -lblitz``. In case you run into
 errors in the linking of libraries, append this: `pkg-config blitz --libs --cflags` to the compilation statement. 
 
 This program demonstrates working with arrays of one and two dimensions. An array is declared by creating an object of 
 the Array  using: Array<T_Numtype, N_rank> obj_name(m1,m2..mN), where T_numtype can be an integer type, floating point,
-complex or any user defined data type (http://www.oonumerics.org/blitz/manual/blitz02.html), N_rank is the dimension
-of the array, obj_name is the variable name and m1, m2 .. mN are the number of elements in each dimension. As you can see,
-once the arrays have been declared you can carry out basic arithmetic functions on them just like scalars 
-(http://www.oonumerics.org/blitz/manual/blitz03.html#l67). 
+complex or any user defined data type, N_rank is the dimension of the
+array, obj_name is the variable name and m1, m2 .. mN are the number
+of elements in each dimension. As you can see, once the arrays have
+been declared you can carry out basic arithmetic functions on them
+just like scalars. (Please see the manual pages `here
+<http://www.oonumerics.org/blitz/manual/blitz02.html>`_ and `here
+<http://www.oonumerics.org/blitz/manual/blitz03.html#l67>`_ to learn
+more). 
 
 The above code assumes that you already know the number of elements you want to store in the array. What if you don't? 
-In the next program, we see how you allocate the array at run-time by using the resize() (http://www.oonumerics.org/blitz/manual/blitz02.htm)
-member function (Listing 6). 
+In the next program, we see how you allocate the array at run-time by
+using the ``resize()`` member function (Listing 6).
 
-[INSERT array_dynamic.cc. Caption: Listing 6]
+::
 
-The code is pretty straightforward: the array objects ('a' and 'A') are declared without specifying the size, and hence no memory
-is allocated. Then, in each case we ask the user for the number of elements in the array and then use that to resize() the array.
-Then, we use the () operator to index individual element of the array where we store the input data. Note, that this is in
-contrast to the indexing of C-style arrays (where we index using []) and the details of the operator () can be seen here at  
-http://www.oonumerics.org/blitz/manual/blitz02.html#l45. A list of all the member functions of the Array class is available
-at http://www.oonumerics.org/blitz/manual/blitz02.html#l55. The Array class support features like sub-arrays, splicing, Range
-objects and custom storage orders and the detailed reference is available at http://www.oonumerics.org/blitz/manual/blitz02.html#l27.
+    /*array_blitz.cc*/
 
-Besides the arithmetic operations, you may also carry out the familiar math operations: abs(), cos(), floor(), etc which are carried
-out in an element-wise fashion. For example, consider two array objects, A and B declared as Array<float,1> A(10),B(10). A statement
-such as B=sin(A), will result in assigning the individual sin() values of the elements in A to B. You may also compare two
-array objects. For further information on this, please refer to the project documentation at http://www.oonumerics.org/blitz/manual/blitz03.html#l64.
+    /* Dynamic Array objects using Blitz++ */
+
+    #include <blitz/array.h>
+    using namespace blitz;
+
+    int main()
+    {   
+        int n;
+	cout << ">>>> Dynamic 1-D Array Demonstration >>>>" << endl << endl;
+
+  	Array<float,1> a;
+  	cout << "Enter the number of elements:: ";
+	cin >> n;
+
+  	/* Resize the array */
+  	a.resize(n);
+
+  	/* Input the array*/
+  	for(int i=0;i<n;i++)
+    	    cin >> a(i); /* uses the  () operator to refer each element*/
+  
+        cout << "a = " << a <<endl << endl;
+
+  	cout << ">>>> Dynamic 2-D Array Demonstration >>>>" << endl << endl;
+
+  	Array<float,2> A;
+	cout << "Enter the number of elements in the two dimensions:: ";
+	int r,c;
+	cin >> r >> c;
+
+	/* Resize the matrix */
+	A.resize(r,c);
+
+	/* Input the array*/
+	for(int i=0;i<r;i++)
+	{
+	    for(int j=0;j<c;j++)
+	        cin >> A(i,j); /* uses the  () operator to refer each element*/
+	}
+	
+	cout << "A = " << A <<endl << endl;
+	return 0;
+}
+
+
+In the above listing, the array objects ``a`` and ``A`` are declared without specifying the size, and hence no memory
+is allocated. Then, in each case we ask the user for the number of
+elements in the array and then use the ``resize()`` method to resize the array.
+Then, we use the ``()`` operator to index individual element of the array where we store the input data. Note, that this is in
+contrast to the indexing of C-style arrays (where we index using
+``[]``) and the details of the operator () can be seen `here
+<http://www.oonumerics.org/blitz/manual/blitz02.html#l45>`_ . The Array class support features like sub-arrays, splicing, Range
+objects and custom storage orders and the detailed reference is
+available `here <http://www.oonumerics.org/blitz/manual/blitz02.html#l27>`_.
+
+Besides the arithmetic operations, you may also carry out the familiar math operations: ``abs(), cos(), floor()``, etc which are carried
+out in an element-wise fashion. For example, consider two array objects, ``A`` and ``B`` declared as ``Array<float,1> A(10),B(10)``. A statement
+such as ``B=sin(A)``, will result in assigning the individual ``sin`` values of the elements in ``A`` to ``B``. You may also compare two
+array objects. For further information on this, please refer to the
+project documentation `here <http://www.oonumerics.org/blitz/manual/blitz03.html#l64>`_.
 
 Next, we take a look at the random number generators facility. Blitz++ supports uniform, discrete uniform, normal, exponential, beta, gamma
 and F distributions. Let us try out the normal random number generation facility (Listing 7).
 
-[INSERT normal_demo.cc. Caption: Listing 7]
+::
+    /*normal_demo.c*/
 
-As you will see from the documentation (http://www.oonumerics.org/blitz/manual/blitz09.html#l119), the generators provided can only return
-a single random number drawn from the specified distribution via the method random(). So, what we have done in the above program is use our 
-knowledge of Arrays to create a helper function randompool_uniform() to return an array of a certain specified random numbers. You may
-extend this function to include the facility to return an array of any dimension. You can redirect the output of the above program to 
-a file, and then plot a histogram of the data. If you generate a pool of about 10000,  you should be able to see a near perfect
-bell-type curve. (Figure 1)
+    /* Using the Uniform Random number Generator*/
 
-[INSERT FIGURE: misc/histogram.png - Caption: Histogram of the random pool]
+    #include <random/normal.h>
+    #include <blitz/array.h>
+
+    using namespace blitz;
+    using namespace ranlib;
+
+    Array<double,1> randompool_unform(int n);
+
+    /* Returns a pool of n uniformly distributed random numbers*/
+    Array<double,1> randompool_uniform(int n)
+    {
+        /* Uniform Normal distribution with mean 0 and standarad deviation 1*/
+    	Normal<double> rnd_normal(0,1);
+
+	/* Setup the seed*/
+	rnd_normal.seed((unsigned int)time(0));
+
+	/* Declare an array and create the pool*/
+	Array<double,1> rnd_array(n);
+	for(int i=0;i<n;i++)
+	    rnd_array(i) = rnd_normal.random();   
+
+	/* return */
+	return rnd_array;
+    }
+
+
+    int main()
+    {
+        int n;
+    	cout << "Number of unifromly distributed random integers? :: " ;
+	cin >> n;
+
+	Array<double,1> rnd_array;
+	rnd_array.resize(n);
+
+	/* Call the random pool*/
+	rnd_array = randompool_uniform(n);
+	
+	/* print each element individually to facilitate
+	plotting*/
+	for(int i=0;i<n;i++)
+	    cout << rnd_array(i) << endl;
+	return 0;  
+	
+    }
+
+The generators provided can only return a single random number drawn
+from the specified distribution via the method ``random()``. So, what we
+have done in the above program is use our knowledge of Arrays to
+create a helper function ``randompool_uniform()`` to return an array
+of a certain specified random numbers. You may extend this function to
+include the facility to return an array of any dimension. You can
+redirect the output of the above program to  a file, and then plot a
+histogram of the data. If you generate a pool of about 10000,  you
+should be able to see a near perfect bell-type curve.
+
+.. figure:: misc/histogram.png
+   :scale: 100 %
+   :alt: alternate text
+   :align: center
+
+   Histogram of the random pool
 
 In this section, we have taken a very generic look at Blitz++, learning about the basic building block of using Blitz++, i.e. Arrays
 and then using them in a small utility for creating a random pool. There is a large number of other features in Blitz++, which you can learn from 
