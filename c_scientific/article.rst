@@ -6,7 +6,7 @@ to be supplemented with custom libraries when advanced numerical functionalities
 a look at two such libraries - the GNU Scientific Library and Blitz++. In the last section of this article, we take a look
 at `Ch` - a C/C++ interpreter which combines the power of C/C++ with the ease of use of an interpreter. Since we look at three
 different topics - we shall be discussing the very basics of each in a hands-on fashion stressing on examples to illustrate
-the features.
+the features. For C/C++, we will use ``gcc`` and ``g++`` compilers respectively, on Linux.
 
 GNU Scientific Library
 ----------------------
@@ -72,7 +72,7 @@ Our first program will demonstrate the usage of vectors in GSL (Listing 1).
 
 The code in listing 1 allocates a vector of the size specified by the user using the function ``gsl_vector_alloc()``, which
 returns a pointer of gsl_vector type. Note that the default data type for the vector is a double. You can have a vector
-of any of the basic data-types (http://www.gnu.org/software/gsl/manual/html_node/Data-types.html). Next, we assign
+of any of the basic `data-types <http://www.gnu.org/software/gsl/manual/html_node/Data-types.html>`_. Next, we assign
 elements to this vector by using the function ``gsl_vector_set(v, i, gsl_rng_uniform(r))``, where ``v`` is the vector which we are assigning elements to,
 ``i`` is the position and ``gsl_uniform_random(r)`` returns a double which is assigned to the this element of the vector. 
 Next, we retrieve the elements of this vector element-wise by using the ``gsl_vector_get()`` function, and finally free the
@@ -175,7 +175,7 @@ On executing the above code, you should see an output similar to::
     V1+V2:: 1.16265 1.22982 0.71663 1.70178 1.28 
     V1-V2:: 0.999742 0.282618 0.231657 0.957477 0.540044 
 
-GSL provides support for `two-dimensional matrices <http://www.gnu.org/software/gsl/manual/html_node/Matrices.html>` and has an interface similar
+GSL provides support for `two-dimensional matrices <http://www.gnu.org/software/gsl/manual/html_node/Matrices.html>`_ and has an interface similar
 to the GSL vectors. Matrices provide the foundation for the GSL's `linear algebra` functions.
 
 GSL's sorting functions provides facilities for sorting an array (C-style), a vector and finding the k smallest or largest functions.
@@ -372,9 +372,10 @@ capabilities of GSL.
 A look at Blitz++
 =================
 
-Blitz++ (http://www.oonumerics.org/blitz/) is a C++ class library for scientific computing. The project page reports performance
+`Blitz++ <http://www.oonumerics.org/blitz/>`_ is a C++ class library for scientific computing. The project page reports performance
 on part with Fortran 77/90 and currently has support for arrays, vectors, matrices and random number generators. To install this
-library, either use your distribution's package manager or you may download the source from http://sourceforge.net/projects/blitz/files.
+library, either use your distribution's package manager or you may
+download the source from `here <http://sourceforge.net/projects/blitz/files>`_.
 
 Let us now write our first program using Blitz++ where we learn about
 using the Array class (Listing 5).
@@ -447,7 +448,7 @@ using the Array class (Listing 5).
 
 
 To compile this file correctly, you will need to link the blitz library: ``g++ array_blitz.cc -lblitz``. In case you run into
-errors in the linking of libraries, append this: `pkg-config blitz --libs --cflags` to the compilation statement. 
+errors in the linking of libraries, append this: ``pkg-config blitz --libs --cflags`` to the compilation statement. 
 
 This program demonstrates working with arrays of one and two dimensions. An array is declared by creating an object of 
 the Array  using: Array<T_Numtype, N_rank> obj_name(m1,m2..mN), where T_numtype can be an integer type, floating point,
@@ -745,8 +746,7 @@ Ch includes the basic functions for statistical analysis: corrcoef() for finding
 and functions for finding the mean and median. Ch, however comes with the NAG statistics toolkit, which provides a large number of other functionalities.
 
 The 2D and 3D plotting functions in Ch are based on bindings to the popular gnuplot program and provides functions such as plotxy(), plotxyz(), 
-fplotxy() and fplotxyz() for plotting 2D and 3D data. Please refer http://www.softintegration.com/docs/ch/plot/ for a detailed usage description
-of the same. 
+fplotxy() and fplotxyz() for plotting 2D and 3D data. 
 
 Miscellaneous other facilities available in Ch include pseudo-random number generation functions - rand() and urand(), functions for combinatorial
 analysis - combination() and functions for evaluating Fast Fourier Transforms.
@@ -789,7 +789,23 @@ For Future Exploration
 There are couple more projects which I would like to draw your attention to in this area: Armadillo - a C++ Linear Algebra library 
 (http://arma.sourceforge.net/) and the GNU Multi-precision library (http://gmplib.org/). 
 
-Please refer to the resources section to explore more on the topics we discussed in this article.
+Please refer to the resources section to explore more on the topics we
+discussed in this article.
+
+Article, code and Terms of use
+==============================
+
+The source for this article is available here_. The article source is not 
+be reproduced/remixed in any form without an explicit permission from
+me. The example codes may be used in any way, provided this article is
+not held responsible for any damage to animate or inanimate alike.
+
+.. _here: https://github.com/amitsaha/notes/blob/master/c_scientific/article.rst
+
+Contact
+=======
+
+Drop a line at amitsaha.in@gmail.com or tweet me @echorand.
 
 
 Resources
@@ -797,35 +813,33 @@ Resources
 
 Math.h
 
-* C mathematical functions: http://en.wikipedia.org/wiki/C_mathematical_functions
+- `C mathematical functions <http://en.wikipedia.org/wiki/C_mathematical_functions>`_
 
 GSL
 
-* GSL Homepage: http://www.gnu.org/software/gsl/
-* GSL Vectors and Matrices: http://www.gnu.org/software/gsl/manual/html_node/Vectors-and-Matrices.html
-* GSL Sorting functions: http://www.gnu.org/software/gsl/manual/html_node/Sorting.html
-* GSL One-dimensional Minimization functions: http://www.gnu.org/software/gsl/manual/html_node/One-dimensional-Minimization.html
-* GSL Concept Index: http://www.gnu.org/software/gsl/manual/html_node/Concept-Index.html
-* GSL Reference Manual: http://www.gnu.org/software/gsl/manual/html_node/index.html
-* GSL Shell: http://www.nongnu.org/gsl-shell/doc/  
+- `GSL Homepage <http://www.gnu.org/software/gsl/>`_
+- `GSL Vectors and Matrices <http://www.gnu.org/software/gsl/manual/html_node/Vectors-and-Matrices.html>`_
+- `GSL Sorting functions <http://www.gnu.org/software/gsl/manual/html_node/Sorting.html>`_
+- `GSL One-dimensional Minimization functions <http://www.gnu.org/software/gsl/manual/html_node/One-dimensional-Minimization.html`_
+- `GSL Concept Index <http://www.gnu.org/software/gsl/manual/html_node/Concept-Index.html>`_
+- `GSL Reference Manual <http://www.gnu.org/software/gsl/manual/html_node/index.html>`_
+- `GSL Shell <http://www.nongnu.org/gsl-shell/doc/>`_
 
 Blitz++
 
-* Blitz++ Homepage: http://www.oonumerics.org/blitz/
-* Papers and resources: http://www.oonumerics.org/blitz/papers/
-* Sourceforge: http://sourceforge.net/projects/blitz/
-* SciPy, Weave and Blitz++: http://docs.scipy.org/doc/scipy/reference/tutorial/weave.html#blitz
+- `Blitz++ Homepage <http://www.oonumerics.org/blitz/>`_
+- `Papers and resources <http://www.oonumerics.org/blitz/papers/>`_
+- `Sourceforge page <http://sourceforge.net/projects/blitz/>`_
+- `SciPy, Weave and Blitz+ <http://docs.scipy.org/doc/scipy/reference/tutorial/weave.html#blitz`_
 
 Ch
 
-* Ch Homepage: http://www.softintegration.com/
-* Introduction to the Ch Language Environment: http://www.softintegration.com/docs/ch/
-* Ch User's Guide and Reference guide: http://www.softintegration.com/docs/
-* Ch Web-based Numeric Analysis demo: http://www.softintegration.com/chhtml/lang/demos/lib/libch/numeric/
-* Ch IDE: http://www.softintegration.com/docs/ch/chide/
-* C for Engineers and Scientists: An Interpretive Approach: http://iel.ucdavis.edu/cfores/
-* Ch's CGI Capabilities: http://www.softintegration.com/docs/ch/cgi/
-
-Resources:
-
-* Article source code: 'c_scientific_article' directory at https://bitbucket.org/amitksaha/articles_code/src
+- `Ch Homepage <http://www.softintegration.com/>`_
+- `Introduction to the Ch Language Environment <http://www.softintegration.com/docs/ch/`_
+- `Ch User's Guide and Reference guide <http://www.softintegration.com/docs/>`_
+- `Ch Web-based Numeric Analysis demo
+  <http://www.softintegration.com/chhtml/lang/demos/lib/libch/numeric/>`_
+- `Ch plotting <http://www.softintegration.com/docs/ch/plot/>`_
+- `Ch IDE <http://www.softintegration.com/docs/ch/chide/>`_
+- `C for Engineers and Scientists: An Interpretive Approach <http://iel.ucdavis.edu/cfores/>`_
+- `Ch's CGI Capabilities <http://www.softintegration.com/docs/ch/cgi/>`_
