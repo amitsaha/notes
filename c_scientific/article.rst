@@ -282,6 +282,8 @@ and the ``gsl_sort_largest_index()`` correspond to the two functions we used in 
 Next, we use GSL's function minimizing capabilities to find the minimum of a simple one-dimensional function: :math:`2x^2 + 4x`, which has a minimum
 at ``x=-1`` (Listing 4) (This program has been built upon the example in the GSL documentation).
 
+::
+
     /*Listing-4: gsl_fmin.c*/
     /* Demonstration of using the function minimizing features
     in GSL */
@@ -531,6 +533,7 @@ Next, we take a look at the random number generators facility. Blitz++ supports 
 and F distributions. Let us try out the normal random number generation facility (Listing 7).
 
 ::
+
     /*normal_demo.c*/
 
     /* Using the Uniform Random number Generator*/
@@ -593,7 +596,7 @@ histogram of the data. If you generate a pool of about 10000,  you
 should be able to see a near perfect bell-type curve.
 
 .. figure:: misc/histogram.png
-   :scale: 100 %
+   :scale: 60 %
    :alt: alternate text
    :align: center
 
