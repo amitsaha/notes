@@ -1,5 +1,5 @@
 C/C++ Scientific Programming Libraries and Tools
-----------------------------------------------
+------------------------------------------------
 
 ``math.h`` provides basic mathematical functions as part of the `C` standard library and are also usable from `C++`. However, it needs
 to be supplemented with custom libraries when advanced numerical functionalities are desired. In this article, we shall take
@@ -261,7 +261,7 @@ Listing 3 demonstrates a simple usage for a couple of these.
   	free(largest);
 	
 	return 0;
-}
+    }
 
 The ``gsl_sort_vector()`` function carries out an in-place sorting on the specified vector, and the ``gsl_sort_vector_largest()`` is used to find
 the k largest numbers. In the above listing, a vector is initialized with ``10000`` random numbers and the top ``10`` is chosen using the latter function.
@@ -456,9 +456,7 @@ complex or any user defined data type, N_rank is the dimension of the
 array, obj_name is the variable name and m1, m2 .. mN are the number
 of elements in each dimension. As you can see, once the arrays have
 been declared you can carry out basic arithmetic functions on them
-just like scalars. (Please see the manual pages `here
-<http://www.oonumerics.org/blitz/manual/blitz02.html>`_ and `here
-<http://www.oonumerics.org/blitz/manual/blitz03.html#l67>`_ to learn
+just like scalars. (Please see the manual pages `here <http://www.oonumerics.org/blitz/manual/blitz02.html>`_ and `here <http://www.oonumerics.org/blitz/manual/blitz03.html#l67>`_ to learn
 more). 
 
 The above code assumes that you already know the number of elements you want to store in the array. What if you don't? 
@@ -819,7 +817,7 @@ GSL
 - `GSL Homepage <http://www.gnu.org/software/gsl/>`_
 - `GSL Vectors and Matrices <http://www.gnu.org/software/gsl/manual/html_node/Vectors-and-Matrices.html>`_
 - `GSL Sorting functions <http://www.gnu.org/software/gsl/manual/html_node/Sorting.html>`_
-- `GSL One-dimensional Minimization functions <http://www.gnu.org/software/gsl/manual/html_node/One-dimensional-Minimization.html`_
+- `GSL One-dimensional Minimization functions <http://www.gnu.org/software/gsl/manual/html_node/One-dimensional-Minimization.html>`_
 - `GSL Concept Index <http://www.gnu.org/software/gsl/manual/html_node/Concept-Index.html>`_
 - `GSL Reference Manual <http://www.gnu.org/software/gsl/manual/html_node/index.html>`_
 - `GSL Shell <http://www.nongnu.org/gsl-shell/doc/>`_
@@ -829,15 +827,14 @@ Blitz++
 - `Blitz++ Homepage <http://www.oonumerics.org/blitz/>`_
 - `Papers and resources <http://www.oonumerics.org/blitz/papers/>`_
 - `Sourceforge page <http://sourceforge.net/projects/blitz/>`_
-- `SciPy, Weave and Blitz+ <http://docs.scipy.org/doc/scipy/reference/tutorial/weave.html#blitz`_
+- `SciPy, Weave and Blitz+ <http://docs.scipy.org/doc/scipy/reference/tutorial/weave.html#blitz>`_
 
 Ch
 
 - `Ch Homepage <http://www.softintegration.com/>`_
-- `Introduction to the Ch Language Environment <http://www.softintegration.com/docs/ch/`_
+- `Introduction to the Ch Language Environment <http://www.softintegration.com/docs/ch/>`_
 - `Ch User's Guide and Reference guide <http://www.softintegration.com/docs/>`_
-- `Ch Web-based Numeric Analysis demo
-  <http://www.softintegration.com/chhtml/lang/demos/lib/libch/numeric/>`_
+- `Ch Web-based Numeric Analysis demo <http://www.softintegration.com/chhtml/lang/demos/lib/libch/numeric/>`_
 - `Ch plotting <http://www.softintegration.com/docs/ch/plot/>`_
 - `Ch IDE <http://www.softintegration.com/docs/ch/chide/>`_
 - `C for Engineers and Scientists: An Interpretive Approach <http://iel.ucdavis.edu/cfores/>`_
