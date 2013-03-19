@@ -381,7 +381,7 @@ Let us now write our first program using Blitz++ where we learn about
 using the Array class (Listing 5).
 :: 
 
-    /*array_demo.cc*/
+    /*Listing-5: array_demo.cc*/
 
     /* Simple demonstration of using Array 
     in Blitz++*/
@@ -467,7 +467,7 @@ using the ``resize()`` member function (Listing 6).
 
 ::
 
-    /*array_blitz.cc*/
+    /*Listing-6: array_blitz.cc*/
 
     /* Dynamic Array objects using Blitz++ */
 
@@ -535,7 +535,7 @@ and F distributions. Let us try out the normal random number generation facility
 
 ::
 
-    /*normal_demo.c*/
+    /*Listing-7: normal_demo.c*/
 
     /* Using the Uniform Random number Generator*/
 
@@ -795,12 +795,11 @@ discussed in this article.
 Article, code and Terms of use
 ==============================
 
-The source for this article is available here_. The article source is not 
+The source for this article is available `here <https://github.com/amitsaha/notes/blob/master/c_scientific/article.rst>`_. The article source is not 
 be reproduced/remixed in any form without an explicit permission from
 me. The example codes may be used in any way, provided this article is
 not held responsible for any damage to animate or inanimate alike.
 
-.. _here: https://github.com/amitsaha/notes/blob/master/c_scientific/article.rst
 
 Contact
 =======
