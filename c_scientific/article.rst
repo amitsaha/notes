@@ -509,7 +509,7 @@ using the ``resize()`` member function (Listing 6).
 	
 	cout << "A = " << A <<endl << endl;
 	return 0;
-}
+    }
 
 
 In the above listing, the array objects ``a`` and ``A`` are declared without specifying the size, and hence no memory
