@@ -1,8 +1,8 @@
 Sphinx as a Static Site Generator
 ---------------------------------
 
-In this article, we will take a look at ``Sphinx
-<http://sphinx-doc.org/>``_ (specifically Sphinx 1.1.3) as a static
+In this article, we will take a look at `Sphinx
+<http://sphinx-doc.org/>`_ (specifically Sphinx 1.1.3) as a static
 site generator tool. Let's get started.
 
 Installing Sphinx
@@ -43,7 +43,7 @@ questions about your new site.
 - pngmath: No
 - mathjax: Yes
 - ifconfig: No
-- viewcode: n
+- viewcode: No
 - Makefile: Yes
 - Windows command file: Yes
 
@@ -113,8 +113,8 @@ then look as follows::
 
 Now, rebuild the HTML pages using ``make html``. If you reopen (or
 refresh) the ``index.html`` page, you will see that it has links to
-the contents of ``page1.rst``. The ``.. toctree
-<http://sphinx-doc.org/markup/toctree.html#toctree-directive>``_
+the contents of ``page1.rst``. The `.. toctree
+<http://sphinx-doc.org/markup/toctree.html#toctree-directive>`_
 directive does all the magic of creating the table of contents on
 this page, and you can control the depth of the table of contents
 using the number after ``:maxdepth``.
@@ -132,8 +132,7 @@ Including code samples is as easy as this::
     print 'A line of Python'
 
 
-See `this <http://sphinx-doc.org/rest.html#source-code>`_ and `this
-<http://sphinx-doc.org/markup/code.html>`_ to learn more.
+See `this <http://sphinx-doc.org/rest.html#source-code>`_ and `this <http://sphinx-doc.org/markup/code.html>`_ to learn more.
 
 There are of course *directives*  for pretty much everything that you
 may need.
