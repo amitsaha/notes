@@ -297,8 +297,7 @@ Read the docs
 -------------
 
 If you are going to store your sphinx root directory in a public
-source code repository, you can use `read the docs
-<readthedocs.org>`. I highly recommend using this option if you are
+source code repository, you can use `read the docs <http://readthedocs.org>`_. I highly recommend using this option if you are
 going to store your documentation sources in a public repository. Once
 you have setup the appropriate hook, your sources would be built
 automatically everytime you push a change.
