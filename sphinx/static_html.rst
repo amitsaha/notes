@@ -56,7 +56,7 @@ We will soon understand in detail what each of these are and how we
 can start creating content for the site. Before that, type ``make
 html`` in the directory where you created the directory
 structure. This command builds the HTML for your site, and places
-those files in the directory `html` under `_build`. You will notice
+those files in the directory ``html`` under ``_build``. You will notice
 that there is a ``index.html`` file in that directory. This is your
 `homepage` or the `master page` of your site. Open this file in your
 browser. You should see a web page similar to this one:
