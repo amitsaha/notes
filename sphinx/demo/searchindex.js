@@ -1,0 +1,1 @@
+Search.setIndex({objects:{},terms:{text:1,modul:0,indic:0,video:[0,1],tabl:0,todo:1,index:0,sub:[0,1],note:0,add:1,program:0,"new":1,content:0,math:1,head:[0,1],chart:[0,1],here:1,googl:[0,1],youtub:[0,1],welcom:[],search:0,document:[],equat:1,thi:1,page:[0,1],block:1},objtypes:{},titles:["My Programming Notes","Page 1"],objnames:{},filenames:["index","page1"]})

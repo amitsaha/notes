@@ -354,7 +354,7 @@ Now, push the ``gh-pages`` branch to the remote repository::
 
 Once that is complete, you can now go to the URL:
 ``http://github-user-name.github.com/site/demo`` to see your pages. See
-`this <http://amitsaha.github.com/site/demo`_ page as an example.
+`this <http://amitsaha.github.com/site/demo>`_ page as an example.
 
 You can of course now have multiple directories in the ``site``
 repository and then you can host a different set of static pages.
