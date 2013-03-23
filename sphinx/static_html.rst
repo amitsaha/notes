@@ -160,7 +160,7 @@ remove, since we only plan to generate HTML output. That will leave
 the default and HTML specific configuration options. As you will
 notice, this file has been created from your responses to the
 ``sphinx-quickstart`` command. The ``conf.py`` file after tweaking and
-customizing looks like `this <conf.html>`_ (along with the associated
+customizing looks like `this <http://amitsaha.github.com/site/misc/sphinx_article_1_conf.html>`_ (along with the associated
 comments; created using `pycco <http://fitzgen.github.com/pycco/>`_).
 
 There are a number of default themes that you can use and you can
