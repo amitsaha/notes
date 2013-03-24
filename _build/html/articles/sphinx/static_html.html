@@ -1,0 +1,381 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Sphinx as a Static Site Generator &mdash; Technical Writings: Amit Saha</title>
+    
+    <link rel="stylesheet" href="../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../_static/theme_extras.js"></script>
+    <link rel="top" title="Technical Writings: Amit Saha" href="../../index.html" />
+    <link rel="up" title="Documentation" href="../../documentation.html" />
+    <link rel="prev" title="Documentation" href="../../documentation.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../index.html">
+          <span>Technical Writings: Amit Saha</span></a></h1>
+        <h2 class="heading"><span>Sphinx as a Static Site Generator</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="../../documentation.html">Documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="sphinx-as-a-static-site-generator">
+<h1>Sphinx as a Static Site Generator<a class="headerlink" href="#sphinx-as-a-static-site-generator" title="Permalink to this headline">¶</a></h1>
+<p>In this article, we will take a look at <a class="reference external" href="http://sphinx-doc.org/">Sphinx</a> (specifically Sphinx 1.1.3) as a static
+site generator tool. Let&#8217;s get started.</p>
+<div class="section" id="installing-sphinx">
+<h2>Installing Sphinx<a class="headerlink" href="#installing-sphinx" title="Permalink to this headline">¶</a></h2>
+<p>Installing sphinx is as easy as <tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">sphinx</span></tt> (on Linux and
+Windows). <tt class="docutils literal"><span class="pre">pip</span></tt> will download a bunch of other dependencies (<tt class="docutils literal"><span class="pre">docutils,</span>
+<span class="pre">Jinja2,</span> <span class="pre">pygments</span></tt> as well). Once installed, check whether sphinx is
+available to you by typing <tt class="docutils literal"><span class="pre">$</span> <span class="pre">sphinx-quickstart</span></tt> at the command
+line. This should give you a welcome message. We proceed from there in
+the next section. (On Windows, if you have added
+<tt class="docutils literal"><span class="pre">C:\Python27\Scripts</span></tt> to the Windows <tt class="docutils literal"><span class="pre">Path</span></tt> variable, the sphinx
+commands should be already available to be executed since the
+sphinx binaries are also installed in this location).</p>
+</div>
+<div class="section" id="creating-the-sphinx-directory-structure">
+<h2>Creating the Sphinx directory structure<a class="headerlink" href="#creating-the-sphinx-directory-structure" title="Permalink to this headline">¶</a></h2>
+<p>Go to your directory (say <tt class="docutils literal"><span class="pre">demo</span></tt>) where you want to create the content of your
+static site and execute the <tt class="docutils literal"><span class="pre">sphinx-quickstart</span></tt> command. It should
+display a welcome message and start a wizard asking you various
+questions about your new site.</p>
+<ul class="simple">
+<li>Root path: Select the default (current directory)</li>
+<li>Source and build directories: default</li>
+<li>Name prefix: Default</li>
+<li>Project name: Your project name (say, &#8220;Programming Notes&#8221;)</li>
+<li>Author name(s): The name of the author(s)</li>
+<li>Project version: 1.0 (say)</li>
+<li>Project release: 1 (say)</li>
+<li>Source file suffix: default (.rst)</li>
+<li>Name of your master document: index</li>
+<li>Epub builder: No</li>
+<li>autodoc, doctest, intersphinx extensions: No</li>
+<li>todo: Yes</li>
+<li>coverage: No</li>
+<li>pngmath: No</li>
+<li>mathjax: Yes</li>
+<li>ifconfig: No</li>
+<li>viewcode: No</li>
+<li>Makefile: Yes</li>
+<li>Windows command file: Yes</li>
+</ul>
+<p>The executable now creates a directory structure, and you will see the
+directories <tt class="docutils literal"><span class="pre">_build,</span> <span class="pre">_static,</span> <span class="pre">_templates</span></tt> and the files <tt class="docutils literal"><span class="pre">conf.py,</span>
+<span class="pre">index.rst,</span> <span class="pre">make.bat,</span> <span class="pre">Makefile</span></tt> created in the current directory for
+you.</p>
+<p>We will soon understand in detail what each of these are and how we
+can start creating content for the site. Before that, type <tt class="docutils literal"><span class="pre">make</span>
+<span class="pre">html</span></tt> in the directory where you created the directory
+structure. This command builds the HTML for your site, and places
+those files in the directory <tt class="docutils literal"><span class="pre">html</span></tt> under <tt class="docutils literal"><span class="pre">_build</span></tt>. You will notice
+that there is a <tt class="docutils literal"><span class="pre">index.html</span></tt> file in that directory. This is your
+<cite>homepage</cite> or the <cite>master page</cite> of your site. Open this file in your
+browser. You should see a web page similar to this one:</p>
+<a class="reference internal image-reference" href="../../_images/screenshot-1.png"><img alt="Homepage" src="../../_images/screenshot-1.png" style="width: 546.4px; height: 307.2px;" /></a>
+</div>
+<div class="section" id="adding-content">
+<h2>Adding content<a class="headerlink" href="#adding-content" title="Permalink to this headline">¶</a></h2>
+<p>Now, we shall see how we can add content to our static site. It is a
+two step process:</p>
+<ul class="simple">
+<li>Create a new file</li>
+<li>Add it to the <tt class="docutils literal"><span class="pre">index.rst</span></tt> file</li>
+</ul>
+<p>For example, create a new file with the name <tt class="docutils literal"><span class="pre">page1.rst</span></tt> and add the
+following text to it:</p>
+<div class="highlight-python"><pre>Page 1
+------
+
+This is a new page
+
+Sub-heading 1
+=============
+
+Sub-heading 2
+=============</pre>
+</div>
+<p>Now, add this page name to the to the file <tt class="docutils literal"><span class="pre">index.rst</span></tt> which should
+then look as follows:</p>
+<div class="highlight-python"><pre>Welcome to Programming Notes's documentation!
+=============================================
+
+Contents:
+
+.. toctree::
+    :maxdepth: 2
+
+    page1
+
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`</pre>
+</div>
+<p>Now, rebuild the HTML pages using <tt class="docutils literal"><span class="pre">make</span> <span class="pre">html</span></tt>. If you reopen (or
+refresh) the <tt class="docutils literal"><span class="pre">index.html</span></tt> page, you will see that it has links to
+the contents of <tt class="docutils literal"><span class="pre">page1.rst</span></tt>. The <a class="reference external" href="http://sphinx-doc.org/markup/toctree.html#toctree-directive">.. toctree</a>
+directive does all the magic of creating the table of contents on
+this page, and you can control the depth of the table of contents
+using the number after <tt class="docutils literal"><span class="pre">:maxdepth</span></tt>.</p>
+<div class="section" id="including-images">
+<h3>Including images<a class="headerlink" href="#including-images" title="Permalink to this headline">¶</a></h3>
+<p>Images can be included with the <tt class="docutils literal"><span class="pre">..</span> <span class="pre">image</span></tt> directive (See <a class="reference external" href="http://docutils.sourceforge.net/docs/ref/rst/directives.html#image">here</a>).</p>
+</div>
+<div class="section" id="including-code-samples">
+<h3>Including code samples<a class="headerlink" href="#including-code-samples" title="Permalink to this headline">¶</a></h3>
+<p>Including code samples is as easy as this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="s">&#39;A line of Python&#39;</span>
+</pre></div>
+</div>
+<p>See <a class="reference external" href="http://sphinx-doc.org/rest.html#source-code">this</a> and <a class="reference external" href="http://sphinx-doc.org/markup/code.html">this</a> to learn more.</p>
+<p>There are of course <em>directives</em>  for pretty much everything that you
+may need.</p>
+</div>
+<div class="section" id="restructuredtext">
+<h3>ReStructuredText<a class="headerlink" href="#restructuredtext" title="Permalink to this headline">¶</a></h3>
+<p>The content of <tt class="docutils literal"><span class="pre">index.rst</span></tt> (and other pages) is created in plain
+text using a markup syntax known as <em>reStructuredText</em>. A primer can
+be found <a class="reference external" href="http://sphinx-doc.org/rest.html#rst-primer">here</a>.</p>
+</div>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>The default configuration generated by sphinx may well suffice your
+needs, but let us spend some time tinkering with it to customise the
+HTML output (and in the next section, use sphinx extensions).</p>
+<p><tt class="docutils literal"><span class="pre">conf.py</span></tt> in your static site root directory is a Python file which
+contains all the configuration details used by sphinx when you trigger
+a build process. There are a number of configuration statements for
+LaTex, Unix man page and Windows help file output, which you can
+remove, since we only plan to generate HTML output. That will leave
+the default and HTML specific configuration options. As you will
+notice, this file has been created from your responses to the
+<tt class="docutils literal"><span class="pre">sphinx-quickstart</span></tt> command. The <tt class="docutils literal"><span class="pre">conf.py</span></tt> file after tweaking and
+customizing looks like <a class="reference external" href="http://amitsaha.github.com/site/misc/sphinx_article_1_conf.html">this</a> (along with the associated
+comments; created using <a class="reference external" href="http://fitzgen.github.com/pycco/">pycco</a>).</p>
+<p>There are a number of default themes that you can use and you can
+create your own too. See <a class="reference external" href="http://sphinx-doc.org/theming.html">this</a>
+page for details.</p>
+<p>Read all about the options for HTML output <a class="reference external" href="http://sphinx-doc.org/config.html#options-for-html-output">here</a>.</p>
+<p>I also changed the <tt class="docutils literal"><span class="pre">index.rst</span></tt> file to have a different heading.
+Rebuild the HTML pages and now the index page looks similar to:</p>
+<a class="reference internal image-reference" href="../../_images/screenshot-2.png"><img alt="Homepage" src="../../_images/screenshot-2.png" style="width: 546.4px; height: 307.2px;" /></a>
+</div>
+<div class="section" id="builtin-extensions">
+<h2>Builtin Extensions<a class="headerlink" href="#builtin-extensions" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://sphinx-doc.org/extensions.html">Sphinx extensions</a> extend
+Sphinx&#8217;s functionality in various ways. There are a number of builtin
+extensions, two of which we included during the initial setup: <cite>todo</cite>
+and <cite>mathjax</cite>.</p>
+<div class="section" id="todo">
+<h3>todo<a class="headerlink" href="#todo" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">..</span> <span class="pre">todo:</span></tt> (<a class="reference external" href="http://sphinx-doc.org/ext/todo.html#confval-todo_include_todos">doc</a>)
+directive can be used to insert TODO place holder text:</p>
+<div class="highlight-python"><pre>.. todo::
+
+   Add text here</pre>
+</div>
+<p>To display them in the HTML pages, include the following in
+<tt class="docutils literal"><span class="pre">conf.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Include todos</span>
+<span class="n">todo_include_todos</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="mathjax">
+<h3>mathjax<a class="headerlink" href="#mathjax" title="Permalink to this headline">¶</a></h3>
+<p>Using this extension renders math using <a class="reference external" href="http://docs.mathjax.org/en/latest/start.html">Mathjax</a>. To include math
+equations in your pages, use the <tt class="docutils literal"><span class="pre">::math</span></tt> directive. For example:
+<cite>:math:`ax^2+bx+c`</cite>, will render the equation as you can see in the
+HTML of <tt class="docutils literal"><span class="pre">page1.html</span></tt>. The input language is LaTex. Equation blocks
+may be written, like so:</p>
+<div class="highlight-python"><pre>.. math::
+
+   ax^2 + bx + c = 0
+
+   x_1 = \frac{-b+\sqrt{b^2-4ac}}{2a}
+   x_2 = \frac{-b-\sqrt{b^2-4ac}}{2a}w</pre>
+</div>
+<p>To learn more, see <a class="reference external" href="http://sphinx-doc.org/ext/math.html#module-sphinx.ext.mathbase">here</a>.</p>
+</div>
+</div>
+<div class="section" id="custom-extensions">
+<h2>Custom Extensions<a class="headerlink" href="#custom-extensions" title="Permalink to this headline">¶</a></h2>
+<p>Besides the builtin extensions, there are a number of others written
+by various authors maintained in the <a class="reference external" href="https://bitbucket.org/birkenfeld/sphinx-contrib">sphinx-contrib</a> repository.</p>
+<p>You can clone the repository, and install each extension on its own,
+or you could use <cite>pip</cite> with the appropriate package name from <a class="reference external" href="https://pypi.python.org/pypi?%3Aaction=search&amp;term=sphinxcontrib&amp;submit=search">PyPI</a>.</p>
+<div class="section" id="youtube">
+<h3>youtube<a class="headerlink" href="#youtube" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="https://bitbucket.org/birkenfeld/sphinx-contrib/src/8d089df9e2d413c28c24e2cecb465d7b6189c25b/youtube?at=default">youtube</a>
+extension allows embedding YouTube videos in your HTML pages. To
+install it, go to the <cite>youtube</cite> directory of the <tt class="docutils literal"><span class="pre">sphinx-contrib</span></tt>
+clone/download and install the extension using <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span>
+<span class="pre">install</span></tt>.</p>
+<p>You also have to add this extension to the list of extensions in
+<tt class="docutils literal"><span class="pre">conf.py</span></tt> as: <tt class="docutils literal"><span class="pre">'sphinxcontrib.youtube'</span></tt>.</p>
+<p>To embed a video, find out its YouTube ID and you are done. For
+example, to embed <a class="reference external" href="https://www.youtube.com/watch?v=8vwtgMkqE9o">this</a> PyCon 2013 Talk by
+Doug Hellmann, you would do something like:</p>
+<div class="highlight-python"><pre>.. youtube:: 8vwtgMkqE9o
+        :width: 640
+        :height: 480</pre>
+</div>
+<p>If you now rebuild your pages, you will see the YouTube video embedded
+in that page. For other options supported by this extension, see <a class="reference external" href="https://bitbucket.org/birkenfeld/sphinx-contrib/src/8d089df9e2d413c28c24e2cecb465d7b6189c25b/youtube?at=default">here</a>.</p>
+</div>
+<div class="section" id="piechart">
+<h3>piechart<a class="headerlink" href="#piechart" title="Permalink to this headline">¶</a></h3>
+<p>The <cite>piechart</cite> extension allows you to render charts and graphs using
+<a class="reference external" href="https://developers.google.com/chart/">Google chart</a>. You can
+install it similarly as above and add <tt class="docutils literal"><span class="pre">'sphinxcontrib.googlechart'</span></tt> to
+the list of extensions in <tt class="docutils literal"><span class="pre">conf.py</span></tt>.</p>
+<p>For example, the following example from the documentation will render a Venn diagram</p>
+<div class="highlight-python"><pre>.. venndiagram::
+
+         data: 100, 80, 40, 20, 20, 20, 10</pre>
+</div>
+<p>To learn more about this extension, see <a class="reference external" href="https://bitbucket.org/birkenfeld/sphinx-contrib/src/8d089df9e2d413c28c24e2cecb465d7b6189c25b/googlechart?at=default">here</a>.</p>
+</div>
+</div>
+<div class="section" id="publishing">
+<h2>Publishing<a class="headerlink" href="#publishing" title="Permalink to this headline">¶</a></h2>
+<p>To share your HTML pages on the Internet, you have various options.</p>
+<div class="section" id="copying-the-html-directory">
+<h3>Copying the HTML directory<a class="headerlink" href="#copying-the-html-directory" title="Permalink to this headline">¶</a></h3>
+<p>If you already have an account on a web host, simply copy the contents
+of the <tt class="docutils literal"><span class="pre">html</span></tt> sub-directory to an appropriate location of your web
+host and you are done.</p>
+</div>
+<div class="section" id="read-the-docs">
+<h3>Read the docs<a class="headerlink" href="#read-the-docs" title="Permalink to this headline">¶</a></h3>
+<p>If you are going to store your sphinx root directory in a public
+source code repository, you can use <a class="reference external" href="http://readthedocs.org">read the docs</a>. I highly recommend using this option if you are
+going to store your documentation sources in a public repository. Once
+you have setup the appropriate hook, your sources would be built
+automatically everytime you push a change.</p>
+</div>
+<div class="section" id="using-github-pages">
+<h3>Using GitHub pages<a class="headerlink" href="#using-github-pages" title="Permalink to this headline">¶</a></h3>
+<p>This is the option I will describe in some detail, since it may be a
+little involved and also I haven&#8217;t tried this yet, myself.</p>
+<p>First, create a new <em>empty</em> repository with no README on <a class="reference external" href="http://www.github.com">GitHub</a>. Let&#8217;s call it <cite>site</cite>. Now, clone the
+repository:</p>
+<div class="highlight-python"><pre>git clone https://github.com/amitsaha/site.git
+Cloning into 'site'...
+warning: You appear to have cloned an empty repository.</pre>
+</div>
+<p>Create a <tt class="docutils literal"><span class="pre">gh-pages</span></tt> branch in your repository and switch to it:</p>
+<div class="highlight-python"><pre>git checkout -b gh-pages</pre>
+</div>
+<p>Create an empty file with the name <tt class="docutils literal"><span class="pre">.nojekyll</span></tt>. This is to allow us
+to use file and directory names beginning with <tt class="docutils literal"><span class="pre">_</span></tt>, as it tells
+Jekyll not to process it. (See <a class="reference external" href="https://help.github.com/articles/files-that-start-with-an-underscore-are-missing">here</a>
+for the background). You will recall that we have directories such as
+<tt class="docutils literal"><span class="pre">_static</span></tt> and <tt class="docutils literal"><span class="pre">_templates</span></tt> generated by Sphinx in <tt class="docutils literal"><span class="pre">html</span></tt>
+directory, and hence we will need to create this file.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">touch</span> <span class="o">.</span><span class="n">nojekyll</span>
+</pre></div>
+</div>
+<p>Now, let us say that you want to store your HTML files in a separate
+directory, called <tt class="docutils literal"><span class="pre">demo</span></tt>:</p>
+<div class="highlight-python"><pre>mkdir demo</pre>
+</div>
+<p>Now, copy <em>all</em> the files and directories in <tt class="docutils literal"><span class="pre">html</span></tt> directory to this
+directory.</p>
+<p>Add the <tt class="docutils literal"><span class="pre">demo</span></tt> directory and <tt class="docutils literal"><span class="pre">.nojekyll</span></tt> file to Git and commit
+the changes:</p>
+<div class="highlight-python"><pre>git add .nojekyll
+git add demo
+git commit -m "Created .nojekyll and first commit of static HTML"</pre>
+</div>
+<p>Now, push the <tt class="docutils literal"><span class="pre">gh-pages</span></tt> branch to the remote repository:</p>
+<div class="highlight-python"><pre>git push origin gh-pages</pre>
+</div>
+<p>Once that is complete, you can now go to the URL:
+<tt class="docutils literal"><span class="pre">http://github-user-name.github.com/site/demo</span></tt> to see your pages. See
+<a class="reference external" href="http://amitsaha.github.com/site/demo">this</a> page as an example.</p>
+<p>You can of course now have multiple directories in the <tt class="docutils literal"><span class="pre">site</span></tt>
+repository and then you can host a different set of static pages.</p>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>In this article, I have discussed how Sphinx can be used to create a set
+of HTML pages with the ability to embed code, images, YouTube videos
+and charts. We created the content in reStructuredText and then used
+Sphinx&#8217;s build tools to convert them into a set of standalone HTML
+pages. We also looked at a few ways we could host these pages and make
+them available publicly.</p>
+<p>In a next article, we will focus on creating documentation which is coupled
+with a software project and explore Sphinx&#8217;s various features useful
+in such a scenario.</p>
+</div>
+<div class="section" id="article-and-terms-of-use">
+<h2>Article and Terms of use<a class="headerlink" href="#article-and-terms-of-use" title="Permalink to this headline">¶</a></h2>
+<p>The source for this article is available <a class="reference external" href="https://github.com/amitsaha/notes/blob/master/sphinx/static_html.rst">here</a>. The
+article source is not be reproduced/remixed in any form without an
+explicit permission from me. The demo Sphinx project can be found in
+<a class="reference external" href="demo">demo</a>.</p>
+</div>
+<div class="section" id="contact">
+<h2>Contact<a class="headerlink" href="#contact" title="Permalink to this headline">¶</a></h2>
+<p>How did you find this article? Drop a line at <a class="reference external" href="mailto:amitsaha&#46;in&#37;&#52;&#48;gmail&#46;com">amitsaha<span>&#46;</span>in<span>&#64;</span>gmail<span>&#46;</span>com</a> or tweet me &#64;echorand.</p>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="../../documentation.html">Documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, Amit Saha.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

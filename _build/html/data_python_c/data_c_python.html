@@ -1,0 +1,142 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Data in C and CPython: A comparison &mdash; Technical Writings: Amit Saha</title>
+    
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="Technical Writings: Amit Saha" href="../index.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>Technical Writings: Amit Saha</span></a></h1>
+        <h2 class="heading"><span>Data in C and CPython: A comparison</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="data-in-c-and-cpython-a-comparison">
+<h1>Data in C and CPython: A comparison<a class="headerlink" href="#data-in-c-and-cpython-a-comparison" title="Permalink to this headline">¶</a></h1>
+<p>In my last two articles (<a class="reference external" href="http://echorand.me/2013/03/03/data-in-cpython/">Data in CPython</a> and <a class="reference external" href="http://echorand.me/2013/03/09/data-in-c/">Data in C</a>), as it
+turned out, I discussed two fundamental points in each language:</p>
+<ul class="simple">
+<li>What happens in an assignment operation (such as <tt class="docutils literal"><span class="pre">a=2</span></tt>)?</li>
+<li>Are separate copies of data created or references passed to the original when
+they are sent as function parameters?</li>
+</ul>
+<p>In this article, I will summarize the findings by presenting a
+comparative analysis.</p>
+<div class="section" id="assignment">
+<h2>Assignment<a class="headerlink" href="#assignment" title="Permalink to this headline">¶</a></h2>
+<p>The simplest way to explain the difference between an assignment
+operation in C and that in CPython is as follows.</p>
+<p>Assignment is a <em>copying</em>
+operation in C. The data on the right side of the expression is <em>copied</em>
+into the memory location pointed to by the left hand side of the
+assignment statement. This is irrespective of whether this data exists
+anywhere else in the current scope. This is simply because of the fact
+that data in C has no usable existence unless stored in a variable,
+and no two variables in C will occupy the same location in
+memory. Thus, you will have multiple copies of the same data in
+each of these variables, if there are assignment statements to this
+effect.</p>
+<p>On the other hand, an assignment statement is a <em>binding</em> operation in
+CPython. This again follows from the fact that in CPython, data is an
+<cite>object</cite> and occupies a location in memory. Thus, data has existence
+without a variable identifying it. However, like C, to refer
+to the data object, you need a <cite>binding</cite> to it. This binding is what
+you would usually call a variable. However, that is where the
+similarity with variables in C ends. As I discussed in the article on
+CPython, depending on whether the data is mutable or immutable,
+multiple bindings point to different or same memory location. For
+example, if you have two assignment statements, <tt class="docutils literal"><span class="pre">a=2</span></tt> and <tt class="docutils literal"><span class="pre">b=2</span></tt>
+(<tt class="docutils literal"><span class="pre">int</span></tt> data items are immutable), the <tt class="docutils literal"><span class="pre">id(a)</span> <span class="pre">==</span> <span class="pre">id(b)</span></tt> will evaluate to
+<tt class="docutils literal"><span class="pre">True</span></tt>. However, if the statements were <tt class="docutils literal"><span class="pre">a=[]</span></tt> and <tt class="docutils literal"><span class="pre">b=[]</span></tt>
+(<tt class="docutils literal"><span class="pre">list</span></tt> data items are mutable), <tt class="docutils literal"><span class="pre">id(a)==id(b)</span></tt> will evaluate to
+<tt class="docutils literal"><span class="pre">False</span></tt>. What happens when you create a new binding from an existing
+binding? You will have one more binding to the original object. As
+discussed in the article on CPython, depending on whether the original
+object is mutable or not, any change in it will either propagate to
+the copies or not.</p>
+<p>The following graphic attempts to present the differences between the
+two languages visually.</p>
+<a class="reference internal image-reference" href="../_images/data_c_python.png"><img alt="alternate text" class="align-center" src="../_images/data_c_python.png" style="width: 478.0px; height: 339.0px;" /></a>
+</div>
+<div class="section" id="function-parameters">
+<h2>Function parameters<a class="headerlink" href="#function-parameters" title="Permalink to this headline">¶</a></h2>
+<p>In case of C, the parameters are either passed in a <cite>call by value</cite>
+fashion or in a <cite>call by reference</cite> fashion. As we saw in the article
+on C, the type of the data being passed determines this.</p>
+<p>CPython, on the other hand <em>always</em> passes bindings to the original data objects. Depending
+on whether the data object is mutable or immutable, semantics of the
+propagation of changes to the original object are determined.</p>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>This article marks the conclusion of this admittedly limited in scope
+three part series looking at how the most fundamental data types in C
+and Python behave differently from each other. However, I think I can
+now finally say that after writing these three articles, I have
+finally got a clear picture of working with mutable and immutable
+data in Python and how they differ from C.</p>
+<p>I would love to hear any comments/corrections you may have regarding
+this and the previous articles.</p>
+</div>
+<div class="section" id="article-code-and-terms-of-use">
+<h2>Article, code and Terms of use<a class="headerlink" href="#article-code-and-terms-of-use" title="Permalink to this headline">¶</a></h2>
+<p>The source for this article is is available <a class="reference external" href="https://github.com/amitsaha/notes/tree/master/data_python_c">here</a>. The article source
+is not be reproduced/remixed in any form without an explicit
+permission from me.</p>
+</div>
+<div class="section" id="contact">
+<h2>Contact<a class="headerlink" href="#contact" title="Permalink to this headline">¶</a></h2>
+<p>Drop <a class="reference external" href="http://echorand.me">me</a> a line at <a class="reference external" href="mailto:amitsaha&#46;in&#37;&#52;&#48;gmail&#46;com">amitsaha<span>&#46;</span>in<span>&#64;</span>gmail<span>&#46;</span>com</a> or <a class="reference external" href="https://twitter.com/echorand">tweet me</a>.</p>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, Amit Saha.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

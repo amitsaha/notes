@@ -1,0 +1,321 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Compilation and Interpretation in C and CPython &mdash; Technical Writings: Amit Saha</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="Technical Writings: Amit Saha" href="index.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>Technical Writings: Amit Saha</span></a></h1>
+        <h2 class="heading"><span>Compilation and Interpretation in C and CPython</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="compilation-and-interpretation-in-c-and-cpython">
+<h1>Compilation and Interpretation in C and CPython<a class="headerlink" href="#compilation-and-interpretation-in-c-and-cpython" title="Permalink to this headline">¶</a></h1>
+<p>It is common knowledge that programs written in high level languages
+have to be translated into a low level language using programs
+referred to as <cite>translators</cite>. This low level language is either in a <cite>native</cite> form, in the sense that it
+is understood by the operating system itself, or in an <cite>intermediate</cite>
+form which is understood by an intermediate program such as the <cite>bytecode
+interpreter</cite>. It is also known that C is a compiled language, whereas
+CPython is both first compiled <cite>and</cite> then interpreted.</p>
+<p>In this article, I will try to illustrate the difference between the
+two languages by carrying out some simple experiments (on Linux).</p>
+<p>Consider a program, <cite>helloworld.c</cite>:</p>
+<div class="highlight-c"><div class="highlight"><pre><span class="cp"># include&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>We can compile and execute this program as follows:</p>
+<div class="highlight-c"><pre>$ gcc -o helloworld helloworld.c
+$ ./helloworld
+Hello World</pre>
+</div>
+<p>The executable file <cite>helloworld</cite> is the low level language
+equivalent of the high level language program, <cite>helloworld.c</cite>. This is
+what the operating system on your computer understands and hence when it
+is executed, it prints <cite>Hello World</cite> on the screen. This process
+of converting <cite>helloworld.c</cite> to <cite>helloworld</cite> represents the
+<em>translation</em> process. In the case of C, this translation process is
+performed by the compiler, <cite>gcc</cite> (this translation process is really a
+process pipeline and involves two other processes <cite>preprocessing</cite> and <cite>linking</cite>, which
+are carried out by separate programs, automatically invoked by
+<cite>gcc</cite>). Nevertheless, <cite>compilation</cite> is at the core of the translation
+process of C programs and is responsible for converting a high level
+language to its low level equivalent - a version readily executable by
+the operating system on your computer. It is important to note that
+this executable file is composed of the instructions you wrote in your C
+program, along with a other details which are necessary to
+execute your program. These details are specific to the architecture
+and operating system you created the executable file on and hence if you copy a executable file
+you created on a computer with an Intel processor, it will not work at
+all on a computer which has an ARM processor, for example. Hence, you
+will have to recompile the program on the new computer before you can
+execute it. Note that your C program still remains the same, but the
+low level machine language equivalent is different and <cite>gcc</cite> takes
+care of this translation.</p>
+<p>Now, let us consider our first CPython program:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Print Hello world</span>
+<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;Hello World!&#39;</span>
+</pre></div>
+</div>
+<p>You executed this program as follows</p>
+<div class="highlight-python"><pre>$ python helloworld.py
+Hello World!</pre>
+</div>
+<p>Unlike C, where you compiled the program first to get a separate
+executable file and then executed it (a two step process), here you
+executed the program in a single step - your program is directly executed on-the-fly. This
+is how traditionally <cite>interpreters</cite> (interpreted languages) worked. However, modern day
+interpreted languages like CPython (and others) also involve a compilation
+step. Your program <cite>helloworld.py</cite> is first converted to an intermediate
+representation which is a low level equivalent of your high level
+language program. The difference from C is that the instructions in
+these low level language equivalents are not meant to be executed by a
+<em>real</em> computer, but a <em>process virtual machine</em> <a class="footnote-reference" href="#id5" id="id1">[1]</a>. In the case of CPython, the intermediate
+representation is known as <cite>bytecodes</cite> and the virtual machine referred
+to as the <cite>bytecode interpreter</cite> or the CPython virtual machine.
+Hence, the CPython code is first converted into its bytecode equivalent
+which is then executed by the bytecode interpreter. When you run a
+CPython program using <cite>python helloworld.py</cite>, both these steps happen in
+the background.</p>
+<p>While discussing the section on C compilation I mentioned that the
+executable you create on an Intel computer will not run on an ARM
+computer, because of the architecture specific instructions embedded
+into the executable required for executing the program. In the case of
+CPython the bytecodes (result of compilation of the CPython program) are
+executed by the CPython virtual machine, instead of the real
+computer. This extra layer of abstraction allows
+you to execute the same bytecodes (without recompiling) on an Intel computer and an
+ARM computer, for example.</p>
+<p>Let us understand this better with a real example. I will use two
+computers for the experiments: System1 and System2, with both running
+Fedora Linux. However, System1&#8217;s instruction set architecture is x86_64 (Intel) where as
+System2 is a <a class="reference external" href="http://www.raspberrypi.org">RaspberryPi</a> with an armv6l (ARM) instruction set.</p>
+<div class="section" id="c">
+<h2>C<a class="headerlink" href="#c" title="Permalink to this headline">¶</a></h2>
+<p>First, I will the consider the <tt class="docutils literal"><span class="pre">helloworld.c</span></tt> program. I will compile this
+program on System1:</p>
+<div class="highlight-python"><pre>$ arch
+x86_64
+$ gcc -o helloworld helloworld.c
+$ file ./helloworld
+./helloworld: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked (uses shared libs), for GNU/Linux 2.6.32,
+BuildID[sha1]=0xc50d74290927cb25ef9e34055af6c437e89ed5eb, not stripped</pre>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">file</span></tt> command shows the type of a file <a class="footnote-reference" href="#id6" id="id2">[2]</a> and from the above
+output, the key information for us is that the file <tt class="docutils literal"><span class="pre">helloworld</span></tt> is
+a <cite>ELF 64-bit LSB executable, x86-64, version 1 (SYSV)</cite>. You can
+of course execute the program as we have done earlier using
+<tt class="docutils literal"><span class="pre">./helloworld</span></tt>.</p>
+<p>Now, copy the file, <tt class="docutils literal"><span class="pre">helloworld</span></tt> to System2, and try to execute the
+object file:</p>
+<div class="highlight-python"><pre>$ arch
+armv6l
+$ file helloworld
+helloworld: ELF 64-bit LSB executable, x86-64, version 1 (SYSV),
+dynamically linked (uses shared libs), for GNU/Linux 2.6.32,
+BuildID[sha1]=0xc50d74290927cb25ef9e34055af6c437e89ed5eb, not stripped
+$ ./helloworld
+-bash: ./helloworld: cannot execute binary file</pre>
+</div>
+<p>It is clear from the above error message, that <tt class="docutils literal"><span class="pre">helloworld</span></tt> could
+not be executed on System2. Now, transfer the <tt class="docutils literal"><span class="pre">helloworld.c</span></tt> file to
+System2 and compile and execute the file as on System1:</p>
+<div class="highlight-python"><pre>$ gcc -o helloworld helloworld.c
+$ file helloworld
+helloworld: ELF 32-bit LSB executable, ARM, version 1 (SYSV),
+dynamically linked (uses shared libs), for GNU/Linux 2.6.32,
+BuildID[sha1]=0xba57691af19ff94f894645398e66e263c8f57a9b, not stripped
+$ ./helloworld
+Hello World!</pre>
+</div>
+<p>As you can see, the file format of <tt class="docutils literal"><span class="pre">helloworld</span></tt> is different on
+System2 as expected and hence it had to be recreated to execute it.</p>
+</div>
+<div class="section" id="cpython">
+<h2>CPython<a class="headerlink" href="#cpython" title="Permalink to this headline">¶</a></h2>
+<p>On System1, create the <cite>compiled</cite> version of <tt class="docutils literal"><span class="pre">helloworld.py</span></tt> using the following
+code <a class="footnote-reference" href="#id7" id="id3">[3]</a>:</p>
+<div class="highlight-python"><pre>$ python -c "import py_compile;py_compile.compile('helloworld.py')"</pre>
+</div>
+<p>Or, the cleaner version: <tt class="docutils literal"><span class="pre">$</span> <span class="pre">python</span> <span class="pre">-m</span> <span class="pre">py_compile</span> <span class="pre">helloworld.py</span></tt>.
+This will create a <tt class="docutils literal"><span class="pre">helloworld.pyc</span></tt> file in your directory. Once
+again, we can use the <tt class="docutils literal"><span class="pre">file</span></tt> command to see the file type of <tt class="docutils literal"><span class="pre">helloworld.pyc</span></tt>:</p>
+<div class="highlight-python"><pre>$ file helloworld.pyc
+helloworld.pyc: python 2.7 byte-compiled</pre>
+</div>
+<p>To execute the compiled file, simply invoke the <tt class="docutils literal"><span class="pre">python</span></tt> interpreter
+with the <tt class="docutils literal"><span class="pre">helloworld.pyc</span></tt> file as an argument, rather than the
+source file: <tt class="docutils literal"><span class="pre">python</span> <span class="pre">helloworld.pyc</span></tt>.</p>
+<p>Now, copy the file <tt class="docutils literal"><span class="pre">helloworld.pyc</span></tt> to System2 and try to execute
+it:</p>
+<div class="highlight-python"><pre>$ arch
+armv6l
+$ file helloworld.pyc
+helloworld.pyc: python 2.7 byte-compiled
+$ python helloworld.pyc
+Hello World!</pre>
+</div>
+<p>To summarize, the compiled <tt class="docutils literal"><span class="pre">helloworld.pyc</span></tt> could be executed
+without being re-created from its source file, <tt class="docutils literal"><span class="pre">helloworld.py</span></tt> on
+two systems with different instruction set architecture. This was made
+possible by the <tt class="docutils literal"><span class="pre">python</span></tt> bytecode interpreter on the two systems,
+which created an abstraction between the bytecodes and the native
+instruction set architecture <a class="footnote-reference" href="#id8" id="id4">[4]</a>. I should mention here that if your
+CPython application has anything to do beyond pure CPython code (C
+extension, for example), the results of the experiments here will not
+be applicable.</p>
+<p><tt class="docutils literal"><span class="pre">python</span></tt></p>
+<p>The CPython executable, <tt class="docutils literal"><span class="pre">python</span></tt> is nothing but a ELF file (similar to your <tt class="docutils literal"><span class="pre">helloworld</span></tt>
+but obviously created from a more complicated set of C source
+files). The almost magical behavior of CPython bytecodes that we saw
+in the previous section is made possible by <tt class="docutils literal"><span class="pre">python</span></tt> taking care of
+the steps necessary to execute the bytecodes on systems with
+different instruction set architecture. To understand this better,
+consider the following two commands, the first on System1 and the
+second on System2:</p>
+<div class="highlight-python"><pre>$ file /usr/bin/python2.7
+/usr/bin/python2.7: ELF 64-bit LSB executable, x86-64, version 1
+(SYSV), dynamically linked (uses shared libs), for GNU/Linux 2.6.32,
+BuildID[sha1]=0x9d8a414b778ff11ec075995248c43cdf5b67f17a, stripped
+
+$ file /usr/bin/python2.7
+/usr/bin/python2.7: ELF 32-bit LSB executable, ARM, version 1 (SYSV),
+dynamically linked (uses shared libs), for GNU/Linux 2.6.32,
+BuildID[sha1]=0x63fd81d3591769d6be0619b7273935ab9521010c, stripped</pre>
+</div>
+<p>As is clear from the above output, the file <tt class="docutils literal"><span class="pre">/usr/bin/python2.7</span></tt>
+(<tt class="docutils literal"><span class="pre">/usr/bin/python</span></tt> is symlinked to <tt class="docutils literal"><span class="pre">/usr/bin/python2</span></tt>, which is in
+turn symlinked to <tt class="docutils literal"><span class="pre">/usr/bin/python2.7</span></tt> in reality), is an ELF
+executable and it has obviously been compiled separately on both these
+systems (thus showing the different ELF file formats).</p>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>The above experiments have hopefully shed some light on C being a
+compiled language and CPython being a compiled and interpreted
+language - this design leads to its interoperability between different
+architectures.</p>
+<p>However, it is important that I mention a language is not compiled or
+interpreted. That is, it is not technically 100% accurate to say that C is a
+compiled language. A language implementation, rather than the language
+is compiled or interpreted. There are interpreters for the C language
+which interpret your C programs and there are CPython implementations
+which are compiled (The water gets murkier in the case of CPython,
+and the boundary between being compiled and interpreted not always
+clear).</p>
+</div>
+<div class="section" id="footnotes">
+<h2>Footnotes<a class="headerlink" href="#footnotes" title="Permalink to this headline">¶</a></h2>
+<table class="docutils footnote" frame="void" id="id5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Note that, there are two kinds of virtual machines that can be
+implemented in software: <cite>system virtual machine</cite> and <cite>process
+virtual machine</cite>. Here, I am referring to the process virtual
+machine. See the <a class="reference external" href="http://en.wikipedia.org/wiki/Virtual_machine">Wikipedia article</a> on Virtual Machine
+to learn more.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id6" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td><a class="reference external" href="http://linux.die.net/man/1/file">http://linux.die.net/man/1/file</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id7" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>The <tt class="docutils literal"><span class="pre">py_compile</span></tt> module can be used to compile a CPython
+program into its bytecode equivalent. This is the version of your
+program that is executed the CPython bytecode interpreter. See:
+<a class="reference external" href="http://docs.python.org/2/library/py_compile.html">http://docs.python.org/2/library/py_compile.html</a>.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id8" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[4]</a></td><td>Actually, to be more accurate, the <tt class="docutils literal"><span class="pre">python</span></tt> executable takes
+care of the interfacing with the operating system kernel (Linux
+Kernel), which is once again different on systems with different
+instruction set architecture.</td></tr>
+</tbody>
+</table>
+<div class="section" id="article-code-and-terms-of-use">
+<h3>Article, code and Terms of use<a class="headerlink" href="#article-code-and-terms-of-use" title="Permalink to this headline">¶</a></h3>
+<p>The source for this article is available <a class="reference external" href="https://github.com/amitsaha/notes/tree/master/c_python_compiler_interpreter.rst">here</a>. The article source is not
+be reproduced/remixed in any form without an explicit permission from
+me.</p>
+</div>
+<div class="section" id="contact">
+<h3>Contact<a class="headerlink" href="#contact" title="Permalink to this headline">¶</a></h3>
+<p>Drop a line at <a class="reference external" href="mailto:amitsaha&#46;in&#37;&#52;&#48;gmail&#46;com">amitsaha<span>&#46;</span>in<span>&#64;</span>gmail<span>&#46;</span>com</a> or tweet me &#64;echorand.</p>
+</div>
+</div>
+<div class="section" id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://readlists.com/f2bd0b33">List of readings on Compilers and Interpreters</a></li>
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Instruction_set_architecture">Instruction Set Architecture</a></li>
+</ul>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, Amit Saha.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

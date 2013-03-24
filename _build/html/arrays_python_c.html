@@ -1,0 +1,142 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Passing around Arrays in Python (as compared to C) &mdash; Technical Writings: Amit Saha</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="Technical Writings: Amit Saha" href="index.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>Technical Writings: Amit Saha</span></a></h1>
+        <h2 class="heading"><span>Passing around Arrays in Python (as compared to C)</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="passing-around-arrays-in-python-as-compared-to-c">
+<h1>Passing around Arrays in Python (as compared to C)<a class="headerlink" href="#passing-around-arrays-in-python-as-compared-to-c" title="Permalink to this headline">¶</a></h1>
+<p>For those of you with a C/C++ background (at some point of time, like
+me), passing around Python’s arrays (or lists) to functions can lead
+to a little bewilderment. For example, consider the following code
+snippet</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">array</span> <span class="kn">import</span> <span class="n">array</span>
+
+<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Object Identifier: {0:d}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">arr</span><span class="p">)))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)):</span>
+        <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="n">arr</span><span class="o">=</span><span class="n">array</span><span class="p">(</span><span class="s">&#39;i&#39;</span><span class="p">,[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Object Identifier: {0:d}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">arr</span><span class="p">)))</span>
+    <span class="c"># results in passing a reference to the</span>
+    <span class="c"># the original array</span>
+    <span class="n">func</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When you run the above snippet, it results in the following output</p>
+<div class="highlight-python"><pre>array('i', [1, 2, 3])
+Object Identifier: 3075060736
+Object Identifier: 3075060736
+array('i', [1, 4, 9])</pre>
+</div>
+<p>It is a little surprising here, since the array is invoked in a call
+by value manner in C/C++. So why did the original array change? The
+answer lies in Python’s mechanism of passing a reference to the
+original object (the array object) itself, rather than a copy of it to
+the called function. Since, an array is a mutable object, the changes
+made to it is reflected in the original array sent. (You may think of
+this as equivalent to passing a pointer to the function). This idea of
+reference is better understood when you print the identifier of the
+array object in the caller and the called functions. As you can see,
+both of them are same.</p>
+<p>So, what do you do if you don’t want the changes made to an immutable
+object to propagate to the original object? Use the copy module. For
+example</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">array</span> <span class="kn">import</span> <span class="n">array</span>
+
+<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Object Identifier: {0:d}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">arr</span><span class="p">)))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)):</span>
+        <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="n">arr</span><span class="o">=</span><span class="n">array</span><span class="p">(</span><span class="s">&#39;i&#39;</span><span class="p">,[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Object Identifier: {0:d}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">arr</span><span class="p">)))</span>
+    <span class="c"># Pass the copy of the original array</span>
+    <span class="n">myarr</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+    <span class="n">func</span><span class="p">(</span><span class="n">myarr</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The above code results in the following output</p>
+<div class="highlight-python"><pre>array('i', [1, 2, 3])
+Object Identifier: 3075063072
+Object Identifier: 3075060736
+array('i', [1, 2, 3])</pre>
+</div>
+<p>As can be seen from the object identifiers, they are two separate
+objects and hence changes made in the called function is not
+propagated to the original object.</p>
+<p>Code: <a class="reference external" href="https://gist.github.com/3487468">https://gist.github.com/3487468</a></p>
+<p>Note that I have used Python 3.3 for the examples.</p>
+<p>Some related links:</p>
+<blockquote>
+<div><a class="reference external" href="http://stackoverflow.com/questions/986006/python-how-do-i-pass-a-variable-by-reference">http://stackoverflow.com/questions/986006/python-how-do-i-pass-a-variable-by-reference</a>
+<a class="reference external" href="http://effbot.org/zone/call-by-object.htm">http://effbot.org/zone/call-by-object.htm</a></div></blockquote>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, Amit Saha.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
