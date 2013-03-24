@@ -77,25 +77,6 @@ now finally say that after writing these three articles, I have
 finally got a clear picture of working with mutable and immutable
 data in Python and how they differ from C. 
 
-I would love to hear any comments/corrections you may have regarding
-this and the previous articles.
-
-Article, code and Terms of use
-==============================
-
-The source for this article is is available here_. The article source
-is not be reproduced/remixed in any form without an explicit
-permission from me.
-
-Contact
-=======
-
-Drop me_ a line at amitsaha.in@gmail.com or `tweet me`_.
-
-.. _me: http://echorand.me
-.. _`tweet me`: https://twitter.com/echorand
-.. _here: https://github.com/amitsaha/notes/tree/master/data_python_c
-..
 
 .. _`Data in CPython`: http://echorand.me/2013/03/03/data-in-cpython/
 .. _`Data in C`: http://echorand.me/2013/03/09/data-in-c/

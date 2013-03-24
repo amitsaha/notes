@@ -367,20 +367,8 @@ Sphinx's build tools to convert them into a set of standalone HTML
 pages. We also looked at a few ways we could host these pages and make
 them available publicly.
 
+ The demo Sphinx project can be found in `demo <demo>`_.
+
 In a next article, we will focus on creating documentation which is coupled
 with a software project and explore Sphinx's various features useful
 in such a scenario.
-
-Article and Terms of use
-========================
-
-The source for this article is available `here
-<https://github.com/amitsaha/notes/blob/master/sphinx/static_html.rst>`_. The
-article source is not be reproduced/remixed in any form without an
-explicit permission from me. The demo Sphinx project can be found in
-`demo <demo>`_.
-
-Contact
-=======
-
-How did you find this article? Drop a line at amitsaha.in@gmail.com or tweet me @echorand.

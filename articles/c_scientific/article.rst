@@ -790,20 +790,6 @@ There are couple more projects which I would like to draw your attention to in t
 Please refer to the resources section to explore more on the topics we
 discussed in this article.
 
-Article, code and Terms of use
-==============================
-
-The source for this article is available `here <https://github.com/amitsaha/notes/blob/master/c_scientific/article.rst>`_. The article source is not 
-be reproduced/remixed in any form without an explicit permission from
-me. The example codes may be used in any way, provided this article is
-not held responsible for any damage to animate or inanimate alike.
-
-
-Contact
-=======
-
-Drop a line at amitsaha.in@gmail.com or tweet me @echorand.
-
 
 Resources
 =========

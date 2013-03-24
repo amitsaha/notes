@@ -606,22 +606,6 @@ If you are familiar with Python, you may be interested in my article
 on `data in CPython`_. In my next article, I will summarize these two
 articles highlighting the differences between the two. 
 
-Article, code and Terms of use
-==============================
-
-The source for this article and the listings are available here_. Feel
-free to use the listings in any way you like. The article source is not
-be reproduced/remixed in any form without an explicit permission from
-me.
-
-
-Contact
-=======
-
-Drop me_ a line at amitsaha.in@gmail.com or tweet me @echorand.
-
-.. _me: http://echorand.me
-.. _here: https://github.com/amitsaha/notes/tree/master/data_python_c
 .. _`data in CPython`: http://echorand.me/2013/03/03/data-in-cpython/
 
 

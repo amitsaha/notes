@@ -251,20 +251,6 @@ Footnotes
    instruction set architecture.
 
 
-Article, code and Terms of use
-==============================
-
-The source for this article is available here_. The article source is not 
-be reproduced/remixed in any form without an explicit permission from
-me.
-
-.. _here: https://github.com/amitsaha/notes/tree/master/c_python_compiler_interpreter.rst
-
-Contact
-=======
-
-Drop a line at amitsaha.in@gmail.com or tweet me @echorand.
-
 See also
 ~~~~~~~~
 

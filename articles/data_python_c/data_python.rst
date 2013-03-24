@@ -649,21 +649,6 @@ In a next article, I plan to write on variables, data representation
 and passing parameters to functions in C highlighting the differences
 from Python.
 
-Article, code and Terms of use
-==============================
-
-The source for this article and the listings are available here_. Feel
-free to use the listings in any way you like. The article source is not
-be reproduced/remixed in any form without an explicit permission from
-me.
-
-The code listings can be run using CPython 2.7 or CPython 3.3.
-
-Contact
-=======
-
-Drop me_ a line at amitsaha.in@gmail.com or tweet me @echorand.
-
 .. _Python data model: http://docs.python.org/2/reference/datamodel.html#objects-values-and-types
 .. _me: http://echorand.me
 .. _@echorand: https://twitter.com/echorand
