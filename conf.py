@@ -98,7 +98,7 @@ html_theme = 'sphinx-bootstrap'
 html_theme_options = {
     'github_user':'amitsaha',
     'twitter_username':'echorand',
-    'home_url':'http://echorand.me',
+    'home_url':'http://amitsaha.github.com/site/notes/index.html',
     'disqus_shortname':'echorand'
     }
 
