@@ -262,10 +262,10 @@ in that page. For other options supported by this extension, see `here
 <https://bitbucket.org/birkenfeld/sphinx-contrib/src/8d089df9e2d413c28c24e2cecb465d7b6189c25b/youtube?at=default>`_.
      
 
-piechart
-~~~~~~~~
+googlechart
+~~~~~~~~~~~
 
-The `piechart` extension allows you to render charts and graphs using
+The `googlechart` extension allows you to render charts and graphs using
 `Google chart <https://developers.google.com/chart/>`_. You can
 install it similarly as above and add ``'sphinxcontrib.googlechart'`` to
 the list of extensions in ``conf.py``.
