@@ -103,11 +103,21 @@
 to retrieve various information about a system running Linux. Let&#8217;s get started.</p>
 <div class="section" id="which-python">
 <h2>Which Python?<a class="headerlink" href="#which-python" title="Permalink to this headline">¶</a></h2>
-<p>In this article, when I refer to Python, I am referring to <a class="reference external" href="http://python.org">CPython</a>  2 (2.7 to be exact). I will mention it
+<p>When I refer to Python, I am referring to <a class="reference external" href="http://python.org">CPython</a>  2 (2.7 to be exact). I will mention it
 explicitly when the same code won&#8217;t work with CPython 3 (3.3) and
 provide the alternative code, explaining the differences. Just to make
 sure that you have CPython installed, type <tt class="docutils literal"><span class="pre">python</span></tt> or <tt class="docutils literal"><span class="pre">python3</span></tt>
-from the terminal and you should see the Python prompt displayed in your terminal.</p>
+from the terminal and you should see the Python prompt displayed in
+your terminal.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please note that all the programs have their first line as
+<tt class="docutils literal"><span class="pre">#!/usr/bin/env</span> <span class="pre">python</span></tt> meaning that, we want the Python
+interpreter to execute these scripts. Hence, if you make your
+script executable using <tt class="docutils literal"><span class="pre">chmod</span> <span class="pre">+x</span> <span class="pre">your-script.py</span></tt>, you can
+execute it using <tt class="docutils literal"><span class="pre">./your-script.py</span></tt> (which is what you will see
+in this article).</p>
+</div>
 </div>
 <div class="section" id="exploring-the-platform-module">
 <h2>Exploring the <cite>platform</cite> module<a class="headerlink" href="#exploring-the-platform-module" title="Permalink to this headline">¶</a></h2>
@@ -230,6 +240,25 @@ screen (In the above program, the <tt class="docutils literal"><span class="pre"
 trailing newline character from the end of each line).</p>
 <p>The next code listing uses the <tt class="docutils literal"><span class="pre">startswith()</span></tt> string method to
 display the models of your processing units:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#! /usr/bin/env python</span>
+
+<span class="sd">&quot;&quot;&quot; Print the model of your </span>
+<span class="sd">    processing units</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;/proc/cpuinfo&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+        <span class="c"># Ignore the blank line separating the information between</span>
+        <span class="c"># details about two processing units</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;model name&#39;</span><span class="p">):</span>
+                <span class="n">model_name</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>When you run this program, you should see the model names of each of
 your processing units. For example, here is what I see on my computer:</p>
 <div class="highlight-python"><pre>Intel(R) Core(TM) i7-3520M CPU @ 2.90GHz
@@ -243,8 +272,8 @@ approaches actually report the architecture of the kernel your system is
 running. So, if your computer is actually a 64-bit computer, but is
 running a 32-bit kernel, then the above methods will report it as
 having a 32-bit architecture. To find the true architecture of the computer
-you can look for the <cite>lm</cite> flag in the list of flags in
-<tt class="file docutils literal"><span class="pre">/proc/cpuinfo</span></tt>. The <cite>lm</cite> flag stands for long mode and
+you can look for the <tt class="docutils literal"><span class="pre">lm</span></tt> flag in the list of flags in
+<tt class="file docutils literal"><span class="pre">/proc/cpuinfo</span></tt>. The <tt class="docutils literal"><span class="pre">lm</span></tt> flag stands for long mode and
 is only present on computers with a 64-bit architecture. The next
 program shows how you can do this:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c">#! /usr/bin/env python</span>
@@ -322,22 +351,23 @@ The next listing shows how you can do so.</p>
 <span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">cpuinfo</span> <span class="o">=</span> <span class="n">cpuinfo</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">processor</span> <span class="ow">in</span> <span class="n">cpuinfo</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">cpuinfo</span><span class="p">[</span><span class="n">processor</span><span class="p">])</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">cpuinfo</span><span class="p">[</span><span class="n">processor</span><span class="p">][</span><span class="s">&#39;model name&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>This code uses an <cite>OrderedDict</cite> (Ordered dictionary) instead of a usual dictionary so
 that the key and values are stored in the order which they are found in
 the file. Hence, the data for the first processing unit is followed by
 the data about the second processing unit and so on. If you call this
-function, it returns you a dictionary, which you can then use to
-sieve for the information you are looking for. For example, the
-following code snippet when added to the above listing will print the
-number of cores in each of your processing units:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">cpuinfo</span> <span class="o">=</span> <span class="n">cpuinfo</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">processor</span> <span class="ow">in</span> <span class="n">cpuinfo</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">cpuinfo</span><span class="p">[</span><span class="n">processor</span><span class="p">][</span><span class="s">&#39;cpu cores&#39;</span><span class="p">])</span>
-</pre></div>
+function, it returns you a dictionary. The keys of dictionary are each
+processing unit with. You can then use to sieve for the information
+you are looking for (as demonstrated in the <tt class="docutils literal"><span class="pre">if</span>
+<span class="pre">__name__=='__main__'</span></tt> block). The above program when run will once
+again print the model name of each processing unit (as indicated by
+the statement <tt class="docutils literal"><span class="pre">print(cpuinfo[processor]['model</span> <span class="pre">name'])</span></tt>:</p>
+<div class="highlight-python"><pre>Intel(R) Core(TM) i7-3520M CPU @ 2.90GHz
+Intel(R) Core(TM) i7-3520M CPU @ 2.90GHz
+Intel(R) Core(TM) i7-3520M CPU @ 2.90GHz
+Intel(R) Core(TM) i7-3520M CPU @ 2.90GHz</pre>
 </div>
 </div>
 <div class="section" id="memory-information">
@@ -369,15 +399,11 @@ creates a dictionary from the contents of this file and dumps it.</p>
 </pre></div>
 </div>
 <p>As earlier, you could also access any specific information you are
-looking for by using that as a key. For example, when you add the
-following lines to the above program,, it will print the total memory
-on your system and how much of it is currently available:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-
-    <span class="n">meminfo</span> <span class="o">=</span> <span class="n">meminfo</span><span class="p">()</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Total memory: {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">meminfo</span><span class="p">[</span><span class="s">&#39;MemTotal&#39;</span><span class="p">]))</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Free memory: {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">meminfo</span><span class="p">[</span><span class="s">&#39;MemFree&#39;</span><span class="p">]))</span>
-</pre></div>
+looking for by using that as a key (shown in the <tt class="docutils literal"><span class="pre">if</span>
+<span class="pre">__name__==__main__</span></tt> block). When you execute the program, you should
+see an output similar to the following:</p>
+<div class="highlight-python"><pre>Total memory: 7897012 kB
+Free memory: 249508 kB</pre>
 </div>
 </div>
 <div class="section" id="network-statistics">
@@ -394,10 +420,40 @@ as total bytes sent, number of packets, errors, etc.). Our interest
 here is to extract the total data sent and recieved by the
 different network devices. The next listing shows how we can extract this
 information from <tt class="file docutils literal"><span class="pre">/proc/net/dev</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+
+<span class="k">def</span> <span class="nf">netdevs</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39; RX and TX bytes for each of the network devices &#39;&#39;&#39;</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;/proc/net/dev&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">net_dump</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    
+    <span class="n">device_data</span><span class="o">=</span><span class="p">{}</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;data&#39;</span><span class="p">,[</span><span class="s">&#39;rx&#39;</span><span class="p">,</span><span class="s">&#39;tx&#39;</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">net_dump</span><span class="p">[</span><span class="mi">2</span><span class="p">:]:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;:&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&#39;lo&#39;</span><span class="p">:</span>
+            <span class="n">device_data</span><span class="p">[</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="n">data</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mf">1024.0</span><span class="o">*</span><span class="mf">1024.0</span><span class="p">),</span> 
+                                                <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">8</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mf">1024.0</span><span class="o">*</span><span class="mf">1024.0</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">device_data</span>
+
+<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    
+    <span class="n">netdevs</span> <span class="o">=</span> <span class="n">netdevs</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">dev</span> <span class="ow">in</span> <span class="n">netdevs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;{0}: {1} MiB {2} MiB&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">netdevs</span><span class="p">[</span><span class="n">dev</span><span class="p">]</span><span class="o">.</span><span class="n">rx</span><span class="p">,</span> <span class="n">netdevs</span><span class="p">[</span><span class="n">dev</span><span class="p">]</span><span class="o">.</span><span class="n">tx</span><span class="p">))</span>
+</pre></div>
+</div>
 <p>When you run the above program, the output should display your
 network devices along with the total recieved and transmitted data in
-MiB since your last reboot. You could probably couple this with a
-persistent data storage mechanism to write your own data usage
+MiB since your last reboot as shown below:</p>
+<div class="highlight-python"><pre>em1: 0.0 MiB 0.0 MiB
+wlan0: 2651.40951061 MiB 183.173976898 MiB</pre>
+</div>
+<p>You could probably couple this with a persistent data storage mechanism to write your own data usage
 monitoring program.</p>
 </div>
 <div class="section" id="processes">
@@ -434,155 +490,13 @@ will see when you execute the above program.</p>
     <span class="k">print</span><span class="p">(</span><span class="s">&#39;Total number of running processes:: {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pids</span><span class="p">)))</span>
 </pre></div>
 </div>
+<p>The above program when executed will show an output similar to:</p>
+<div class="highlight-python"><pre>Total number of running processes:: 229</pre>
+</div>
 <p>Each of the process directories contain number of other files and
 directories which contain various information about the invoking
 command of the process, the shared libraries its using, and
 others.</p>
-</div>
-<div class="section" id="generic-reader-for-proc">
-<h2>Generic reader for /proc<a class="headerlink" href="#generic-reader-for-proc" title="Permalink to this headline">¶</a></h2>
-<p>So far, we have concentrated on &#8220;hand-picking&#8221; the files or
-directories we wanted to read from <tt class="file docutils literal"><span class="pre">/proc</span></tt>. The next listing presents a
-more generic reader of <tt class="file docutils literal"><span class="pre">/proc</span></tt> entries.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
-
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Python interface to the /proc file system.</span>
-<span class="sd">Although this can be used as a replacement for cat /proc/... on the command line,</span>
-<span class="sd">its really aimed to be an interface to /proc for other Python programs.</span>
-
-<span class="sd">As long as the object you are looking for exists in /proc</span>
-<span class="sd">and is readable (you have permission and if you are reading a file,</span>
-<span class="sd">its contents are alphanumeric, this program will find it). If its a</span>
-<span class="sd">directory, it will return a list of all the files in that directory</span>
-<span class="sd">(and its sub-dirs) which you can then read using the same function.</span>
-
-
-<span class="sd">Example usage:</span>
-
-<span class="sd">Read /proc/cpuinfo:</span>
-
-<span class="sd">$ ./readproc.py proc.cpuinfo</span>
-
-<span class="sd">Read /proc/meminfo:</span>
-
-<span class="sd">$ ./readproc.py proc.meminfo</span>
-
-<span class="sd">Read /proc/cmdline:</span>
-
-<span class="sd">$ ./readproc.py proc.cmdline</span>
-
-<span class="sd">Read /proc/1/cmdline:</span>
-
-<span class="sd">$ ./readproc.py proc.1.cmdline</span>
-
-<span class="sd">Read /proc/net/dev:</span>
-
-<span class="sd">$ ./readproc.py proc.net.dev</span>
-
-<span class="sd">Comments/Suggestions:</span>
-
-<span class="sd">Amit Saha &lt;@echorand&gt;</span>
-<span class="sd">&lt;http://echorand.me&gt;</span>
-
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">re</span>
-
-<span class="k">def</span> <span class="nf">toitem</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Convert /foo/bar to foo.bar &quot;&quot;&quot;</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">,</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">path</span>
-
-<span class="k">def</span> <span class="nf">todir</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Convert foo.bar to /foo/bar&quot;&quot;&quot;</span>
-    <span class="c"># TODO: breaks if there is a directory whose name is foo.bar (for</span>
-    <span class="c"># eg. conf.d/), but we don&#39;t have to worry as long as we are using</span>
-    <span class="c"># this for reading /proc</span>
-    <span class="k">return</span> <span class="s">&#39;/&#39;</span> <span class="o">+</span> <span class="n">item</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">readproc</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">    Resolves proc.foo.bar items to /proc/foo/bar and returns the</span>
-<span class="sd">    appropriate data.</span>
-<span class="sd">    1. If its a file, simply return the lines in this file as a list</span>
-<span class="sd">    2. If its a directory, return the files in this directory in the</span>
-<span class="sd">    proc.foo.bar style as a list, so that this function can then be</span>
-<span class="sd">    called to retrieve the contents</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">item</span> <span class="o">=</span> <span class="n">todir</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> 
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&#39;Non-existent object&#39;</span>
-    
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
-        <span class="c"># its a little tricky here. We don&#39;t want to read huge binary</span>
-        <span class="c"># files and return the contents. We will probably not need it</span>
-        <span class="c"># in the usual case.</span>
-        <span class="c"># utilities like &#39;file&#39; on Linux and the Python interface to</span>
-        <span class="c"># libmagic are useless when it comes to files in /proc for</span>
-        <span class="c"># detecting the mime type, since the these are not on-disk</span>
-        <span class="c"># files. </span>
-        <span class="c"># Searching, i find this solution which seems to be a</span>
-        <span class="c"># reasonable assumption. If we find a &#39;\0&#39; in the first 1024</span>
-        <span class="c"># bytes of a file, we declare it as binary and return an empty string</span>
-        <span class="c"># however, some of the files in /proc which contain text may</span>
-        <span class="c"># also contain the null byte as a constituent character.</span>
-        <span class="c"># Hence, I use a RE expression that matches against any</span>
-        <span class="c"># combination of alphanumeric characters</span>
-        <span class="c"># If any of these conditions suffice, we read the file&#39;s contents</span>
-        
-        <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&#39;\w*&#39;</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                <span class="n">chunk</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
-                <span class="k">if</span> <span class="s">&#39;</span><span class="se">\0</span><span class="s">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">chunk</span> <span class="ow">or</span> <span class="n">pattern</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-                    <span class="n">f</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-                    <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
-                    <span class="k">return</span> <span class="n">data</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="s">&#39;{0} is binary&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s">&#39;Error reading object&#39;</span>
-
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">dir_path</span><span class="p">,</span> <span class="n">dir_name</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
-            <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
-                <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">toitem</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="nb">file</span><span class="p">)))</span>
-        <span class="k">return</span> <span class="n">data</span>
-
-<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">readproc</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">readproc</span><span class="p">(</span><span class="s">&#39;proc&#39;</span><span class="p">)</span>
-    
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The function <tt class="docutils literal"><span class="pre">readproc()</span></tt> takes inputs such as <tt class="docutils literal"><span class="pre">proc.meminfo</span></tt>,
-<tt class="docutils literal"><span class="pre">proc.cpuinfo</span></tt> or <tt class="docutils literal"><span class="pre">proc.cmdline</span></tt> and returns the contents of
-the file. If the input is a directory (such as <tt class="docutils literal"><span class="pre">/proc/1903</span></tt>), it
-will return the list of all files in the this directory and all its
-sub-directories. You could then invoke the function <tt class="docutils literal"><span class="pre">readproc()</span></tt>
-on these files to read the file contents. For example:</p>
-<ul class="simple">
-<li>Read /proc/cpuinfo: <tt class="docutils literal"><span class="pre">$</span> <span class="pre">./readproc.py</span> <span class="pre">proc.cpuinfo</span></tt></li>
-<li>Read /proc/meminfo: <tt class="docutils literal"><span class="pre">$</span> <span class="pre">./readproc.py</span> <span class="pre">proc.meminfo</span></tt></li>
-<li>Read /proc/cmdline: <tt class="docutils literal"><span class="pre">$</span> <span class="pre">./readproc.py</span> <span class="pre">proc.cmdline</span></tt></li>
-<li>Read /proc/1/cmdline, i.e. the command that invoked the process with
-process ID 1: <tt class="docutils literal"><span class="pre">$</span> <span class="pre">./readproc.py</span> <span class="pre">proc.1.cmdline</span></tt></li>
-<li>Read /proc/net/dev: <tt class="docutils literal"><span class="pre">$</span> <span class="pre">./readproc.py</span> <span class="pre">proc.net.dev</span></tt></li>
-</ul>
 </div>
 <div class="section" id="block-devices">
 <h2>Block devices<a class="headerlink" href="#block-devices" title="Permalink to this headline">¶</a></h2>
@@ -637,7 +551,7 @@ as well.</p>
 <h2>Building command line utilities<a class="headerlink" href="#building-command-line-utilities" title="Permalink to this headline">¶</a></h2>
 <p>One ubiquitious part of all Linux command line utilities is that they
 allow the user to specify command line arguments to customise the
-default behavior of the program. The <cite>argparse</cite> module
+default behavior of the program. The argparse module
 allows your program to have an interface similar to built-in Linux
 utilities. The next listing shows a program which retrieves all the users on
 your system and prints their login shells (using the <cite>pwd</cite>
@@ -663,7 +577,8 @@ standard library module):</p>
 </pre></div>
 </div>
 <p>When run the program above, it will print all the users on your system
-and their login shells. Now, let us say that you want the program user
+and their login shells.</p>
+<p>Now, let us say that you want the program user
 to be able to choose whether he or she wants to see the system users
 (like <cite>daemon</cite>, <cite>apache</cite>). We will see a first use of the
 <cite>argparse</cite> module to implement this feature in by extending the
@@ -736,7 +651,7 @@ User/Password Utility
 
 optional arguments:
   -h, --help   show this help message and exit
-    --no-system  Specify to omit system users</pre>
+  --no-system  Specify to omit system users</pre>
 </div>
 <p>An example invocation of the above program is as follows:</p>
 <div class="highlight-python"><pre>$ ./getusers.py --no-system
@@ -817,9 +732,9 @@ option to specify the network device you may be interested in.</p>
         <span class="k">print</span><span class="p">(</span><span class="s">&#39;{0}: {1} MiB {2} MiB&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">netdevs</span><span class="p">[</span><span class="n">dev</span><span class="p">]</span><span class="o">.</span><span class="n">rx</span><span class="p">,</span> <span class="n">netdevs</span><span class="p">[</span><span class="n">dev</span><span class="p">]</span><span class="o">.</span><span class="n">tx</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>&#64;L: When you execute the program without any arguments,
-it behaves exactly as the earlier version. However, you can also specify the
-network device you may be interested in. For example:</p>
+<p>When you execute the program without any arguments, it behaves exactly
+as the earlier version. However, you can also specify the network
+device you may be interested in. For example:</p>
 <div class="highlight-python"><pre>$ ./net_devs_2.py
 
 em1: 0.0 MiB 0.0 MiB
@@ -869,8 +784,34 @@ fun using Python for exploring Linux internals.</p>
 </div>
 <div class="section" id="resources">
 <h2>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h2>
-<p>A list of Python resources is available for your reference <a class="reference external" href="https://gist.github.com/amitsaha/4964491">here</a> and should help you in
-following this article&#8217;s programs.</p>
+<div class="section" id="python-resources">
+<h3>Python resources<a class="headerlink" href="#python-resources" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.python.org/2/tutorial/introduction.html#lists">Lists</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/tutorial/datastructures.html#tuples-and-sequences">Tuples</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/library/collections.html#collections.namedtuple">Namedtuples</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/library/collections.html#collections.OrderedDict">OrderedDict</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/library/stdtypes.html#str.split">split()</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/library/stdtypes.html#string-methods">strip() rstrip() and other string methods</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/tutorial/inputoutput.html#reading-and-writing-files">Reading and writing files</a></li>
+<li><a class="reference external" href="http://docs.python.org/2.7/library/os.html">os module</a></li>
+<li><a class="reference external" href="http://docs.python.org/2.7/library/platform.html">platform module</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/library/pwd.html">pwd module</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/library/spwd.html">spwd module</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/library/grp.html">grp module</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/library/subprocess.html">subprocess module</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/library/configparser.html">ConfigParser module</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/library/readline.html">readline module</a></li>
+</ul>
+</div>
+<div class="section" id="system-information">
+<h3>System Information<a class="headerlink" href="#system-information" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Long_mode">Long Mode</a></li>
+<li><a class="reference external" href="http://linux.die.net/man/5/proc">/proc file system</a></li>
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Sysfs">sysfs</a></li>
+</ul>
+</div>
 </div>
 </div>
 
@@ -893,13 +834,16 @@ following this article&#8217;s programs.</p>
 <li><a class="reference internal" href="#memory-information">Memory Information</a></li>
 <li><a class="reference internal" href="#network-statistics">Network Statistics</a></li>
 <li><a class="reference internal" href="#processes">Processes</a></li>
-<li><a class="reference internal" href="#generic-reader-for-proc">Generic reader for /proc</a></li>
 <li><a class="reference internal" href="#block-devices">Block devices</a></li>
 <li><a class="reference internal" href="#building-command-line-utilities">Building command line utilities</a></li>
 <li><a class="reference internal" href="#system-wide-availability-of-your-scripts">System-wide availability of your scripts</a></li>
 <li><a class="reference internal" href="#other-useful-standard-library-modules">Other useful standard library modules</a></li>
 <li><a class="reference internal" href="#what-next">What next?</a></li>
-<li><a class="reference internal" href="#resources">Resources</a></li>
+<li><a class="reference internal" href="#resources">Resources</a><ul>
+<li><a class="reference internal" href="#python-resources">Python resources</a></li>
+<li><a class="reference internal" href="#system-information">System Information</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -927,7 +871,7 @@ following this article&#8217;s programs.</p>
                     &copy;
                         Copyright 2013, Amit Saha.
                 Last updated
-                    on May 13, 2013.
+                    on May 14, 2013.
                 Created using <a
                         href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3
                     .

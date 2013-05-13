@@ -38,4 +38,4 @@ def cpuinfo():
 if __name__=='__main__':
     cpuinfo = cpuinfo()
     for processor in cpuinfo.keys():
-        print(cpuinfo[processor])
+        print(cpuinfo[processor]['model name'])

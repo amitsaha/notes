@@ -7,12 +7,22 @@ to retrieve various information about a system running Linux. Let's get started.
 Which Python?
 =============
 
-In this article, when I refer to Python, I am referring to `CPython
+When I refer to Python, I am referring to `CPython
 <http://python.org>`__  2 (2.7 to be exact). I will mention it
 explicitly when the same code won't work with CPython 3 (3.3) and
 provide the alternative code, explaining the differences. Just to make
 sure that you have CPython installed, type ``python`` or ``python3``
-from the terminal and you should see the Python prompt displayed in your terminal.
+from the terminal and you should see the Python prompt displayed in
+your terminal.
+
+.. note::
+
+   Please note that all the programs have their first line as
+   ``#!/usr/bin/env python`` meaning that, we want the Python
+   interpreter to execute these scripts. Hence, if you make your
+   script executable using ``chmod +x your-script.py``, you can
+   execute it using ``./your-script.py`` (which is what you will see
+   in this article).
 
 Exploring the `platform` module
 =================================
@@ -133,7 +143,7 @@ trailing newline character from the end of each line).
 The next code listing uses the ``startswith()`` string method to
 display the models of your processing units:
 
-.. literalinclude:: code/model.py
+.. literalinclude:: code/cpu_model.py
 
 
 When you run this program, you should see the model names of each of
@@ -150,8 +160,8 @@ approaches actually report the architecture of the kernel your system is
 running. So, if your computer is actually a 64-bit computer, but is 
 running a 32-bit kernel, then the above methods will report it as
 having a 32-bit architecture. To find the true architecture of the computer
-you can look for the `lm` flag in the list of flags in
-:file:`/proc/cpuinfo`. The `lm` flag stands for long mode and
+you can look for the ``lm`` flag in the list of flags in
+:file:`/proc/cpuinfo`. The ``lm`` flag stands for long mode and
 is only present on computers with a 64-bit architecture. The next
 program shows how you can do this:
 
@@ -179,15 +189,17 @@ This code uses an `OrderedDict` (Ordered dictionary) instead of a usual dictiona
 that the key and values are stored in the order which they are found in
 the file. Hence, the data for the first processing unit is followed by
 the data about the second processing unit and so on. If you call this
-function, it returns you a dictionary, which you can then use to
-sieve for the information you are looking for. For example, the
-following code snippet when added to the above listing will print the
-number of cores in each of your processing units::
+function, it returns you a dictionary. The keys of dictionary are each
+processing unit with. You can then use to sieve for the information
+you are looking for (as demonstrated in the ``if
+__name__=='__main__'`` block). The above program when run will once
+again print the model name of each processing unit (as indicated by
+the statement ``print(cpuinfo[processor]['model name'])``::
 
-    if __name__=='__main__':
-        cpuinfo = cpuinfo()
-        for processor in cpuinfo.keys():
-            print(cpuinfo[processor]['cpu cores'])
+    Intel(R) Core(TM) i7-3520M CPU @ 2.90GHz
+    Intel(R) Core(TM) i7-3520M CPU @ 2.90GHz
+    Intel(R) Core(TM) i7-3520M CPU @ 2.90GHz
+    Intel(R) Core(TM) i7-3520M CPU @ 2.90GHz
 
 
 Memory Information
@@ -200,15 +212,12 @@ creates a dictionary from the contents of this file and dumps it.
 .. literalinclude:: code/mem_dict.py
 
 As earlier, you could also access any specific information you are
-looking for by using that as a key. For example, when you add the
-following lines to the above program,, it will print the total memory
-on your system and how much of it is currently available::
+looking for by using that as a key (shown in the ``if
+__name__==__main__`` block). When you execute the program, you should
+see an output similar to the following::
 
-    if __name__=='__main__':
-
-        meminfo = meminfo()
-        print('Total memory: {0}'.format(meminfo['MemTotal']))
-        print('Free memory: {0}'.format(meminfo['MemFree']))
+    Total memory: 7897012 kB
+    Free memory: 249508 kB
 
 Network Statistics
 ==================
@@ -226,12 +235,16 @@ here is to extract the total data sent and recieved by the
 different network devices. The next listing shows how we can extract this
 information from :file:`/proc/net/dev`:
 
-.. literalinclude:: code/netdevs.py
+.. literalinclude:: code/net_devs.py
 
 When you run the above program, the output should display your
 network devices along with the total recieved and transmitted data in
-MiB since your last reboot. You could probably couple this with a
-persistent data storage mechanism to write your own data usage
+MiB since your last reboot as shown below::
+
+    em1: 0.0 MiB 0.0 MiB
+    wlan0: 2651.40951061 MiB 183.173976898 MiB
+
+You could probably couple this with a persistent data storage mechanism to write your own data usage
 monitoring program.
 
 Processes
@@ -249,33 +262,37 @@ will see when you execute the above program.
 
 .. literalinclude:: code/list_pids.py
 
+The above program when executed will show an output similar to::
+
+    Total number of running processes:: 229
+
 Each of the process directories contain number of other files and
 directories which contain various information about the invoking
 command of the process, the shared libraries its using, and
 others.
 
-Generic reader for /proc
-========================
+.. Generic reader for /proc
+.. ========================
 
-So far, we have concentrated on "hand-picking" the files or
-directories we wanted to read from :file:`/proc`. The next listing presents a
-more generic reader of :file:`/proc` entries. 
+.. So far, we have concentrated on "hand-picking" the files or
+.. directories we wanted to read from :file:`/proc`. The next listing presents a
+.. more generic reader of :file:`/proc` entries. 
 
-.. literalinclude:: code/readproc.py
+.. .. literalinclude:: code/readproc.py
 
-The function ``readproc()`` takes inputs such as ``proc.meminfo``,
-``proc.cpuinfo`` or ``proc.cmdline`` and returns the contents of
-the file. If the input is a directory (such as ``/proc/1903``), it
-will return the list of all files in the this directory and all its
-sub-directories. You could then invoke the function ``readproc()``
-on these files to read the file contents. For example:
+.. The function ``readproc()`` takes inputs such as ``proc.meminfo``,
+.. ``proc.cpuinfo`` or ``proc.cmdline`` and returns the contents of
+.. the file. If the input is a directory (such as ``/proc/1903``), it
+.. will return the list of all files in the this directory and all its
+.. sub-directories. You could then invoke the function ``readproc()``
+.. on these files to read the file contents. For example:
 
-- Read /proc/cpuinfo: ``$ ./readproc.py proc.cpuinfo``
-- Read /proc/meminfo: ``$ ./readproc.py proc.meminfo``
-- Read /proc/cmdline: ``$ ./readproc.py proc.cmdline``
-- Read /proc/1/cmdline, i.e. the command that invoked the process with
-  process ID 1: ``$ ./readproc.py proc.1.cmdline``
-- Read /proc/net/dev: ``$ ./readproc.py proc.net.dev``
+.. - Read /proc/cpuinfo: ``$ ./readproc.py proc.cpuinfo``
+.. - Read /proc/meminfo: ``$ ./readproc.py proc.meminfo``
+.. - Read /proc/cmdline: ``$ ./readproc.py proc.cmdline``
+.. - Read /proc/1/cmdline, i.e. the command that invoked the process with
+..   process ID 1: ``$ ./readproc.py proc.1.cmdline``
+.. - Read /proc/net/dev: ``$ ./readproc.py proc.net.dev``
 
 Block devices
 =============
@@ -305,7 +322,7 @@ Building command line utilities
 
 One ubiquitious part of all Linux command line utilities is that they
 allow the user to specify command line arguments to customise the
-default behavior of the program. The `argparse` module
+default behavior of the program. The argparse module
 allows your program to have an interface similar to built-in Linux
 utilities. The next listing shows a program which retrieves all the users on
 your system and prints their login shells (using the `pwd`
@@ -332,7 +349,9 @@ standard library module)::
 
 
 When run the program above, it will print all the users on your system
-and their login shells. Now, let us say that you want the program user
+and their login shells. 
+
+Now, let us say that you want the program user
 to be able to choose whether he or she wants to see the system users
 (like `daemon`, `apache`). We will see a first use of the
 `argparse` module to implement this feature in by extending the
@@ -350,7 +369,7 @@ will see a nice help message with the available options (and what they do)::
 
     optional arguments:
       -h, --help   show this help message and exit
-        --no-system  Specify to omit system users
+      --no-system  Specify to omit system users
 
 An example invocation of the above program is as follows::
 
@@ -401,9 +420,9 @@ option to specify the network device you may be interested in.
 
 .. literalinclude:: code/net_devs_2.py
 
-@L: When you execute the program without any arguments,
-it behaves exactly as the earlier version. However, you can also specify the
-network device you may be interested in. For example::
+When you execute the program without any arguments, it behaves exactly
+as the earlier version. However, you can also specify the network
+device you may be interested in. For example::
 
     $ ./net_devs_2.py 
 
@@ -458,6 +477,30 @@ fun using Python for exploring Linux internals.
 Resources
 =========
 
-A list of Python resources is available for your reference `here
-<https://gist.github.com/amitsaha/4964491>`__ and should help you in
-following this article's programs.
+Python resources
+~~~~~~~~~~~~~~~~
+
+
+- `Lists <http://docs.python.org/2/tutorial/introduction.html#lists>`__
+- `Tuples <http://docs.python.org/2/tutorial/datastructures.html#tuples-and-sequences>`__
+- `Namedtuples <http://docs.python.org/2/library/collections.html#collections.namedtuple>`__
+- `OrderedDict <http://docs.python.org/2/library/collections.html#collections.OrderedDict>`__
+- `split() <http://docs.python.org/2/library/stdtypes.html#str.split>`__
+- `strip() rstrip() and other string methods  <http://docs.python.org/2/library/stdtypes.html#string-methods>`_
+- `Reading and writing files <http://docs.python.org/2/tutorial/inputoutput.html#reading-and-writing-files>`__
+- `os module <http://docs.python.org/2.7/library/os.html>`__
+- `platform module <http://docs.python.org/2.7/library/platform.html>`__
+- `pwd module <http://docs.python.org/2/library/pwd.html>`__
+- `spwd module <http://docs.python.org/2/library/spwd.html>`__
+- `grp module <http://docs.python.org/2/library/grp.html>`__
+- `subprocess module <http://docs.python.org/2/library/subprocess.html>`__
+- `ConfigParser module <http://docs.python.org/2/library/configparser.html>`__
+- `readline module <http://docs.python.org/2/library/readline.html>`__
+
+
+System Information
+~~~~~~~~~~~~~~~~~~
+
+- `Long Mode <http://en.wikipedia.org/wiki/Long_mode>`__
+- `/proc file system <http://linux.die.net/man/5/proc>`__
+- `sysfs <http://en.wikipedia.org/wiki/Sysfs>`__
