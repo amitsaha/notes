@@ -23,7 +23,7 @@ On Linux, you will most likely have to install it separately using the
 package manager. On Ubuntu (Ubuntu 12.04) , you can use the software center to search
 for IDLE and install it (either for Python 2 or Python 3). You can
 also install IDLE using the command line - the package name is most likely
-``idle2`` and ``idle3`` on Ubuntu and ``python-tools`` and
+``idle`` and ``idle3`` on Ubuntu and ``python-tools`` and
 ``python3-tools`` on Fedora (Fedora 18).
 
 Getting Started

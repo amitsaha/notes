@@ -4,16 +4,21 @@
    contain the root `toctree` directive.
 
 Amit Saha's Technical Writings 
-------------------------------
+-------------------------------
 
-I am a programmer who has deep interest in writing technical
-articles. The articles listed here are the ones I have started writing for
-this space exclusively. 
+I am a software engineer with a deep interest in writing.
+The articles listed here are the ones I have started writing for
+this space exclusively. The articles which I have written in the past
+for various magazines are not linked from here, but are available
+`here <http://echorand.me/writings/>`__, if you are interested to take
+a look.
 
-The articles which I have written in the past for various magazines
-are not linked from here, but are available `here
-<http://echorand.me/writings/>`_, if you are interested to take a look.
+Blog/Contact details
+====================
 
+- `Blog <http:///echorand.me>`__
+- `Email <amitsaha.in@gmail.com>`__
+- `Twitter <http://twitter.com/echorand>`__
 
 Articles
 ========
@@ -27,36 +32,26 @@ Articles
    misc.rst
 
 
-Contact
-=======
-
-Please feel free to contact me with corrections and/or suggestions.
-
-- `Homepage <http:///echorand.me>`_
-- `Email <amitsaha.in@gmail.com>`_
-- `Twitter <http://twitter.com/echorand>`_
-
-
-
 Articles and Terms of use
 =========================
 
-The entire project is available on `GitHub <https://github.com/amitsaha/notes>`_. Each of the article's page also
-has a link to its source. The article sources are not be
+The entire project is available on `GitHub
+<https://github.com/amitsaha/notes>`__. Each of the article's page
+also has a link to its source. The article sources are not be
 reproduced/remixed in any form without an explicit permission from me.
 
-The example codes are free for use in any way that may prove useful,
+The example source code is free for use in any way that may prove useful,
 without any explicity gurantee from me on any purpose beyond  
 what is shown in the article.
 
 Thanks
 ======
 
-I manage the contents here using a `Sphinx <http://sphinx-doc.org/>`_
+I manage the contents here using a `Sphinx <http://sphinx-doc.org/>`__
 project. I think it is really awesome.
 
 Also, as you probably can notice at the page footer, I am using the
 Bootstrap theme `modified for Sphinx
-<https://github.com/scotch/sphinx-bootstrap>`_ by Scotch Media. Great stuff.
+<https://github.com/scotch/sphinx-bootstrap>`__ by Scotch Media.
 
 And last but not the least, thanks to GitHub for GitHub pages.
