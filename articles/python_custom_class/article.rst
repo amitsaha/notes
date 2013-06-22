@@ -89,8 +89,8 @@ intuition of distance in 1 dimension (How far is 5 from 2? 5-2 =
     >>> p2=Point((1,2,3))
     >>> print(p1-p2)
     Traceback (most recent call last):
-      File "<stdin>", line 1, in <module>
-      TypeError: unsupported operand type(s) for -: 'Point' and 'Point'
+    File "<stdin>", line 1, in <module>
+    TypeError: unsupported operand type(s) for -: 'Point' and 'Point'
 
 Of course, Python doesn't have any idea what you want it do when you
 ask it to subtract p2 from p1. However, we can tell Python what to do
