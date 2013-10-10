@@ -13,5 +13,6 @@ Programming
    articles/c_scientific/article.rst
    articles/python_linux/article.rst
    articles/self_in_python.rst
+   articles/c_cleanup/cleanup_attribute_c.rst
    
    
