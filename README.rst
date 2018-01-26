@@ -1,6 +1,8 @@
 Amit Saha's Technical Writings
 ==============================
 
+I am using github.com/amitsaha/amitsaha.github.io for all my writings. Most articles from here were migrated to it.
+
 Technical Writings on various topics of various lengths.
 
 The HTML pages are available `here
